@@ -4,7 +4,7 @@
 library
 C#
 .cs
-D:\徐微\LabelBrower\BookLabel\BookLabel.LabelModule\obj\Debug\
+D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Debug\
 BookLabel.LabelModule
 none
 false
@@ -13,7 +13,7 @@ DEBUG;TRACE
 4-340613347
 
 23461363628
-1311382697697
+131-458460053
 Controls\EditableTextBox.xaml;Views\AddCatalogView.xaml;Views\ListView.xaml;Views\MuenView.xaml;
 
 False

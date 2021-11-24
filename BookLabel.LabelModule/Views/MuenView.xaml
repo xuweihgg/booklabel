@@ -17,12 +17,7 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="20"/>
         </Style>
-        <Style x:Key="MenuFIcon" TargetType="MenuItem">
-            <Setter Property="Icon" Value="pack://application:,,,/Resource/#iconfont"></Setter>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="FontSize" Value="20"/>
-        </Style>
+        
         <Style x:Key="ItemsContentBackground" TargetType="{x:Type TreeViewItem}">
             <Setter Property="Background" Value="AliceBlue"></Setter>
         </Style>
@@ -47,6 +42,121 @@
         <Style x:Key="VerticalContentAlignment" TargetType="{x:Type TreeViewItem}">
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
         </Style>
+
+        <Style x:Key="FIconMenuItem" TargetType="{x:Type MenuItem}">
+            <Setter Property="BorderBrush" Value="AliceBlue"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#FEDB11"/>
+            <Setter Property="Foreground" Value="#A145F8"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type MenuItem}">
+                        <!--Item-->
+                        <Border  x:Name="border" Background="Transparent" Height="{TemplateBinding Height}" Opacity="1">
+                            <Grid  VerticalAlignment="Center" Margin="{TemplateBinding Margin}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition x:Name="icon_col" MaxWidth="35" SharedSizeGroup="MenuItemIconColumnGroup"/>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuTextColumnGroup"/>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup"/>
+                                    <ColumnDefinition Width="16" x:Name="arrow_col" SharedSizeGroup="MenumItemArrow"/>
+                                </Grid.ColumnDefinitions>
+                                <!--icon-->
+                                <TextBlock x:Name="PART_Icon" Text="{TemplateBinding Icon}" Foreground="{TemplateBinding Foreground}" Margin="5,1,1,1"
+                                       FontSize="22" Style="{StaticResource FIcon}"/>
+                                <!--Header-->
+                                <ContentPresenter Grid.Column="1" x:Name="txtHeader" Margin="3,1,5,1" MinWidth="90"
+                                          RecognizesAccessKey="True" VerticalAlignment="Center" ContentSource="Header"/>
+                                <!--快捷键 InputGestureText 暂不支持你了 -->
+                                <TextBlock Grid.Column="2" Margin="3,1,3,1" x:Name="IGTHost" Text="{TemplateBinding InputGestureText}" 
+                                       FontSize="{TemplateBinding FontSize}"
+                                       VerticalAlignment="Center" Visibility="Visible" Foreground="{TemplateBinding Foreground}" />
+                                <!--右指针-->
+                                <TextBlock x:Name="PART_Arrow" Grid.Column="3" Text="&#xe605;" Foreground="{TemplateBinding Foreground}" 
+                                       FontSize="14" Style="{StaticResource FIcon}"/>
+                                <!--淡出子集菜单容器-->
+                                <Popup x:Name="SubMenuPopup" AllowsTransparency="true" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" 
+                                        Placement="Bottom"  Focusable="false" VerticalOffset="0"
+                                   PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}">
+                                    <Border Background="{TemplateBinding Background}"  CornerRadius="0" Margin="5" 
+                                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                                        <Grid x:Name="SubMenu" Grid.IsSharedSizeScope="True">
+                                            <StackPanel Margin="0" IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle"/>
+                                        </Grid>
+                                    </Border>
+                                </Popup>
+                            </Grid>
+                        </Border>
+                        <!--触发器-->
+                        <ControlTemplate.Triggers>
+                            <!--TopLevelHeader:第一级菜单（有子菜单）-->
+                            <Trigger Property="Role" Value="TopLevelHeader">
+                                <Setter Property="Visibility" Value="Collapsed" TargetName="PART_Arrow"/>
+                                <Setter Property="Visibility" Value="Collapsed" TargetName="IGTHost"/>
+                                <Setter Property="Margin" Value="5,1,1,1" TargetName="PART_Icon"/>
+                                <Setter Property="Margin" Value="1,1,6,1" TargetName="txtHeader"/>
+                                <Setter Property="MinWidth" Value="10" TargetName="txtHeader"/>
+                                <Setter Property="Width" Value="0" TargetName="arrow_col"/>
+                            </Trigger>
+                            <!--TopLevelItem 第一级菜单（无子级）-->
+                            <Trigger Property="Role" Value="TopLevelItem">
+                                <Setter Property="Visibility" Value="Collapsed" TargetName="PART_Arrow"/>
+                                <Setter Property="Visibility" Value="Collapsed" TargetName="IGTHost"/>
+                                <Setter Property="Margin" Value="5,1,1,1" TargetName="PART_Icon"/>
+                                <Setter Property="Margin" Value="1,1,6,1" TargetName="txtHeader"/>
+                                <Setter Property="MinWidth" Value="10" TargetName="txtHeader"/>
+                                <Setter Property="Width" Value="0" TargetName="arrow_col"/>
+                            </Trigger>
+                            <!--SubmenuHeader:子菜单，有子菜单-->
+                            <Trigger Property="Role" Value="SubmenuHeader">
+                                <Setter Property="Visibility" Value="Visible" TargetName="PART_Arrow"/>
+                                <Setter Property="Placement" Value="Right" TargetName="SubMenuPopup"/>
+                            </Trigger>
+                            <!--SubMenuItem:子菜单，无子级-->
+                            <Trigger Property="Role" Value="SubMenuItem">
+                                <Setter Property="Visibility" Value="Collapsed" TargetName="PART_Arrow"/>
+                            </Trigger>
+                            <!--选中状态，优先级将高于Icon-->
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="PART_Icon" Value="&#xe62a;" Property="Text"></Setter>
+                                <Setter TargetName="PART_Icon" Value="18" Property="FontSize"></Setter>
+                                <Setter TargetName="PART_Icon" Value="White" Property="Foreground"></Setter>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border" Value="50" Property="Opacity"></Setter>
+                            </Trigger>
+                            <!--高亮状态-->
+                            <Trigger Property="IsHighlighted" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="#F08000"></Setter>
+                                <Setter Property="Foreground" Value="White"></Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="#F0A000"></Setter>
+                                <Setter Property="Foreground" Value="White"></Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--基于FIconMenuItem的默认样式，提供Header模板-->
+        <Style x:Key="DefaultMenuItem" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource FIconMenuItem}">
+            <Setter Property="HeaderTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock x:Name="txtHeader" FontSize="{Binding FontSize,RelativeSource={RelativeSource AncestorType={x:Type MenuItem},Mode=FindAncestor}}"
+                               HorizontalAlignment="Stretch" Margin="3,1,5,1"
+                               Text="{Binding Header,RelativeSource={RelativeSource AncestorType={x:Type MenuItem},Mode=FindAncestor}}" VerticalAlignment="Center"
+                               Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType={x:Type MenuItem},Mode=FindAncestor}}"/>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
         <!--TreeViewItem默认样式-->
         <Style  x:Key="DefaultTreeViewItem" TargetType="{x:Type TreeViewItem}">
             <Setter Property="Height" Value="20" />
@@ -148,10 +258,10 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Button Content="新建目录" Command="{Binding InsertCatalogCommand}" Height="24" Background="#A145F8" Foreground="White"/>
+        <Button Content="新增目录" Command="{Binding InsertCatalogCommand}" Height="24" Background="#A145F8" Foreground="White"/>
         <TreeView Grid.Row="1" Width="250"  Margin="3" x:Name="tree1"  ItemTemplate="{StaticResource ItemNode}" ItemsSource="{Binding Catalogs}"    Background="Transparent">
             <TreeView.ItemContainerStyle>
                 <Style BasedOn="{StaticResource DefaultTreeViewItem}" TargetType="{x:Type TreeViewItem}">
@@ -159,9 +269,9 @@
             </TreeView.ItemContainerStyle>
             <TreeView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem  Icon="&#xe6c0;"  Header="增加" Command="{Binding InsertChirdCommand}"  />
-                    <MenuItem  Icon="&#xe6a1;" Header="修改" Command="{Binding UpdateCatalogCommand}"  />
-                    <MenuItem  Icon="&#xe69f;" Header="删除" Command="{Binding DeleteCatalogCommand}" />
+                    <MenuItem  Icon="&#xe6c0;"  Header="增加" Command="{Binding InsertChirdCommand}"  Style="{DynamicResource DefaultMenuItem}"/>
+                    <MenuItem  Icon="&#xe6a1;" Header="修改" Command="{Binding UpdateCatalogCommand}"  Style="{DynamicResource DefaultMenuItem}"/>
+                    <MenuItem  Icon="&#xe69f;" Header="删除" Command="{Binding DeleteCatalogCommand}" Style="{DynamicResource DefaultMenuItem}"/>
                 </ContextMenu>
             </TreeView.ContextMenu>
         </TreeView>
