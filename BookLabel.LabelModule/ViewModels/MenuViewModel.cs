@@ -15,11 +15,10 @@ using static BookLabel.LabelModule.Controls.EditableTextBox;
 
 namespace BookLabel.LabelModule.ViewModels
 {
-    public class MenuViewModel:IDisposable
+    public class MenuViewModel
     {
         ICatalogDataService DataService;
-        TreeView treeView;
-        private UserControl UserControl;
+
         public MenuViewModel(ICatalogDataService dataService)
         {
             DataService = dataService;
@@ -28,61 +27,24 @@ namespace BookLabel.LabelModule.ViewModels
             this.UpdateCatalogCommand = new DelegateCommand(UpdateCatalog);
             this.DeleteCatalogCommand = new DelegateCommand(DeleteCatalog);
             this.InsertChirdCommand = new DelegateCommand(InsertChird);
-        }
-
-        public object GetElementByName(string name)
-        {
-            if (string.IsNullOrEmpty(name))
-                return null;
-
-            var element = UserControl.FindName(name);
-
-            if (element == null)
-                element = ((FrameworkElement)UserControl).FindName(name);
-
-            if (element == null && UserControl.Content is FrameworkElement)
-                element = (UserControl.Content as FrameworkElement).FindName(name);
-
-            return element;
-        }
-
-
-        public void SetControl(UserControl control)
-        {
-            UserControl = control;
-            treeView = GetElementByName("tree1") as TreeView;
-            treeView.SelectedItemChanged += TreeView_SelectedItemChanged;
-            treeView.MouseDoubleClick += TreeView_MouseDoubleClick;
-            this.treeView.AddHandler(EditableTextBox.OnTextModifyCompleteEvent, new ValueChanged(OnTextModifyChanged));
-        }
-
-        private void TreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (catalog != null)
+            OnTextModifyCommand += OnTextModifyChanged;
+            SelectionChangedAction = new Action<object>((cc) =>
             {
-                catalog.IsInEditMode = true;
-            }
+                if (cc is CatalogConstruction)
+                {
+                    catalog = cc as CatalogConstruction;
+                }
+            });
+            MouseDoubleClick = new Action<object>((cc) =>
+            {
+                if (catalog != null)
+                {
+                    catalog.IsInEditMode = true;
+                }
+            });
         }
 
-        private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            catalog = e.NewValue as CatalogConstruction;
-        }
-
-        private CatalogConstruction catalog;
-        /// <summary>
-        /// 0-新增，1-修改，2-删除
-        /// </summary>
-        private int updateFlag = 0;
-        public DelegateCommand InsertCatalogCommand { get; set; }
-        public void InsertCatalog()
-        {
-                catalog = new CatalogConstruction(Guid.NewGuid().ToString(), "目录1");
-                catalog.IsInEditMode = true;
-                Catalogs.Add(catalog);
-                updateFlag = 0;
-        }
-
+        public ValueChanged OnTextModifyCommand;
         public void OnTextModifyChanged(object sender, LostFocusEventArgs args)
         {
             if (catalog == null)
@@ -97,7 +59,7 @@ namespace BookLabel.LabelModule.ViewModels
             if (oldValue == text)
                 return;
 
-           
+
             try
             {
                 catalog.CatalogName = text;
@@ -115,6 +77,24 @@ namespace BookLabel.LabelModule.ViewModels
 
                 MessageBox.Show(ex.Message);
             }
+        }
+        public Action<object> SelectionChangedAction { get; set; }
+
+        public Action<object> MouseDoubleClick { get; set; }
+
+        private CatalogConstruction catalog;
+        /// <summary>
+        /// 0-新增，1-修改，2-删除
+        /// </summary>
+        private int updateFlag = 0;
+        public DelegateCommand InsertCatalogCommand { get; set; }
+        public void InsertCatalog()
+        {
+            catalog = new CatalogConstruction(Guid.NewGuid().ToString(), "目录1");
+            catalog.IsInEditMode = true;
+            Catalogs.Add(catalog);
+            DataService.InsertLable(catalog);
+            updateFlag = 0;
         }
 
         public DelegateCommand UpdateCatalogCommand { get; set; }
@@ -154,14 +134,5 @@ namespace BookLabel.LabelModule.ViewModels
         }
         public ObservableCollection<CatalogConstruction> Catalogs { get; set; }
 
-        public void Dispose()
-        {
-            if (treeView != null)
-            {
-                treeView.SelectedItemChanged -= TreeView_SelectedItemChanged;
-                treeView.MouseDoubleClick -= TreeView_MouseDoubleClick;
-                this.treeView.RemoveHandler(EditableTextBox.OnTextModifyCompleteEvent, new ValueChanged(OnTextModifyChanged));
-            }
-        }
     }
 }

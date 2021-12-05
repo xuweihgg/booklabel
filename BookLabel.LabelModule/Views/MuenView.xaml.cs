@@ -27,9 +27,7 @@ namespace BookLabel.LabelModule.Views
         {
             InitializeComponent();
             this.DataContext = viewModel;
-            viewModel.SetControl(this);
-            
         }
-       
+
     }
 }

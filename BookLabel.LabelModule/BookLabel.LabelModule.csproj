@@ -87,10 +87,12 @@
     <Compile Include="Controls\EditableTextBox.xaml.cs">
       <DependentUpon>EditableTextBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SelectTreeView.cs" />
     <Compile Include="Events\Attachment.cs" />
     <Compile Include="Events\EventBase.cs" />
     <Compile Include="Events\Events.cs" />
     <Compile Include="Events\ExecuteCommandAction.cs" />
+    <Compile Include="Helper\TreeViewBehavior.cs" />
     <Compile Include="Helper\ViewHelper.cs" />
     <Compile Include="Interactivity\MouseDoubleClickTrigger.cs" />
     <Compile Include="Interactivity\TreeViewMouseRightButtonSelectionBehavior.cs" />

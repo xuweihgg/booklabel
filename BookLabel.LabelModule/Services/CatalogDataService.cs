@@ -26,7 +26,7 @@ namespace BookLabel.LabelModule.Services
             var catas = new List<CatalogConstruction>();
             foreach(var item in items.Where(x=>string.IsNullOrWhiteSpace(x.CatalogParentId)))
             {
-                item.ChirdCatalogs = items.Where(x => x.CatalogParentId == item.CatalogId).ToList();
+                item.ChirdCatalogs = new System.Collections.ObjectModel.ObservableCollection<CatalogConstruction>(items.Where(x => x.CatalogParentId == item.CatalogId));
                 catas.Add(item);
             }
             return catas;

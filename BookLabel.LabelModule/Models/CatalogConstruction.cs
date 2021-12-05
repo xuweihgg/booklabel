@@ -3,6 +3,7 @@ using BLToolkit.Validation;
 using BookLabel.LabelModule.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -17,8 +18,8 @@ namespace BookLabel.LabelModule.Models
             this.CatalogId = catalogid;
             this.CatalogName = catalogname;
             this.CatalogParentId = catalogParentid;
-            this.BookLabelDetails = new List<BookLabelDetail>();
-            this.ChirdCatalogs = new List<CatalogConstruction>();
+            this.BookLabelDetails = new ObservableCollection<BookLabelDetail>();
+            this.ChirdCatalogs = new ObservableCollection<CatalogConstruction>();
         }
         public string CatalogId { get; set; }
 
@@ -35,9 +36,9 @@ namespace BookLabel.LabelModule.Models
             set { isInEditMode = value; OnPropertyChanged("isInEditMode"); }
         }
 
-        public List<BookLabelDetail> BookLabelDetails { get; set; }
+        public ObservableCollection<BookLabelDetail> BookLabelDetails { get; set; }
 
-        public List<CatalogConstruction> ChirdCatalogs { get; set; }
+        public ObservableCollection<CatalogConstruction> ChirdCatalogs { get; set; }
 
         #region INotifyPropertyChanged 成员
 

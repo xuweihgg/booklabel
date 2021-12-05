@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:local="clr-namespace:BookLabel.LabelModule.Views"
              xmlns:model="clr-namespace:BookLabel.LabelModule.Models"
              xmlns:control="clr-namespace:BookLabel.LabelModule.Controls"
@@ -252,7 +253,14 @@
             <StackPanel Orientation="Horizontal" >
                 <TextBlock Text="&#xe69a;" Style="{DynamicResource FIcon}"/>
                 <control:EditableTextBox Text="{Binding CatalogName}" IsEditable="True" IsInEditMode="{Binding IsInEditMode, Mode=TwoWay}"  
-                                         FontSize="12" MinWidth="100" VerticalAlignment="Center"   ></control:EditableTextBox>
+                                         FontSize="12" MinWidth="100" VerticalAlignment="Center" >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="OnTextModifyComplete">
+                            <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.OnTextModifyChanged}"
+                                                   CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type control:EditableTextBox}}}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </control:EditableTextBox>
             </StackPanel>
         </HierarchicalDataTemplate>
     </UserControl.Resources>
@@ -262,10 +270,14 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Button Content="新增目录" Command="{Binding InsertCatalogCommand}" Height="24" Background="#A145F8" Foreground="White"/>
-        <TreeView Grid.Row="1" Width="250"  Margin="3" x:Name="tree1"  ItemTemplate="{StaticResource ItemNode}" ItemsSource="{Binding Catalogs}"    Background="Transparent">
+        <TreeView Grid.Row="1" Width="250"  Margin="3" x:Name="tree1"  
+                  ItemTemplate="{StaticResource ItemNode}"   Background="Transparent"
+                  ItemsSource="{Binding Catalogs}"  event:TreeViewBehavior.DoubleClickAction="{Binding MouseDoubleClick}"
+                  event:TreeViewBehavior.SelectionChangedAction="{Binding SelectionChangedAction }">
             <TreeView.ItemContainerStyle>
                 <Style BasedOn="{StaticResource DefaultTreeViewItem}" TargetType="{x:Type TreeViewItem}">
                 </Style>
+
             </TreeView.ItemContainerStyle>
             <TreeView.ContextMenu>
                 <ContextMenu>
