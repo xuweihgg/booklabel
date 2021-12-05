@@ -68,6 +68,6 @@ D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.Shell\obj\Debug\BookLabel.Shell.
 D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.Shell\obj\Debug\BookLabel.Shell.Properties.Resources.resources
 D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.Shell\obj\Debug\BookLabel.Shell.csproj.GenerateResource.cache
 D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.Shell\obj\Debug\BookLabel.Shell.csproj.CoreCompileInputs.cache
-D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.Shell\obj\Debug\BookLabel.Shell.csproj.CopyComplete
 D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.Shell\obj\Debug\BookLabel.Shell.exe
 D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.Shell\obj\Debug\BookLabel.Shell.pdb
+D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.Shell\obj\Debug\BookLabel.Shell.csproj.CopyComplete

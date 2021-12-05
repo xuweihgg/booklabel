@@ -253,13 +253,14 @@
             <StackPanel Orientation="Horizontal" >
                 <TextBlock Text="&#xe69a;" Style="{DynamicResource FIcon}"/>
                 <control:EditableTextBox Text="{Binding CatalogName}" IsEditable="True" IsInEditMode="{Binding IsInEditMode, Mode=TwoWay}"  
-                                         FontSize="12" MinWidth="100" VerticalAlignment="Center" >
-                    <i:Interaction.Triggers>
+                                         FontSize="12" MinWidth="100" VerticalAlignment="Center" CompletedCommand="{Binding DataContext.OnTextModifyCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                   CompletedCommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=2, AncestorType={x:Type control:EditableTextBox}}}">
+                    <!--<i:Interaction.Triggers>
                         <i:EventTrigger EventName="OnTextModifyComplete">
-                            <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.OnTextModifyChanged}"
+                            <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.OnTextModifyComplete}"
                                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type control:EditableTextBox}}}"/>
                         </i:EventTrigger>
-                    </i:Interaction.Triggers>
+                    </i:Interaction.Triggers>-->
                 </control:EditableTextBox>
             </StackPanel>
         </HierarchicalDataTemplate>

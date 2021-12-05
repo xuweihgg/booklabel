@@ -27,7 +27,7 @@ namespace BookLabel.LabelModule.ViewModels
             this.UpdateCatalogCommand = new DelegateCommand(UpdateCatalog);
             this.DeleteCatalogCommand = new DelegateCommand(DeleteCatalog);
             this.InsertChirdCommand = new DelegateCommand(InsertChird);
-            OnTextModifyCommand += OnTextModifyChanged;
+            this.OnTextModifyCommand = new DelegateCommand<string>((cc)=> { OnTextModifyChanged(cc); });
             SelectionChangedAction = new Action<object>((cc) =>
             {
                 if (cc is CatalogConstruction)
@@ -40,20 +40,21 @@ namespace BookLabel.LabelModule.ViewModels
                 if (catalog != null)
                 {
                     catalog.IsInEditMode = true;
+                    updateFlag = 1;
                 }
             });
         }
 
-        public ValueChanged OnTextModifyCommand;
-        public void OnTextModifyChanged(object sender, LostFocusEventArgs args)
+        public DelegateCommand<string> OnTextModifyCommand { get; set; }
+        public void OnTextModifyChanged(string args)
         {
             if (catalog == null)
                 return;
 
-            if (args.NewValue == null)
+            if (args == null)
                 return;
 
-            string text = args.NewValue.ToString();
+            string text = args.ToString();
             string oldValue = catalog.CatalogName;
 
             if (oldValue == text)

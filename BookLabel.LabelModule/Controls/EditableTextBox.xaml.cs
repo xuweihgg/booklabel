@@ -109,6 +109,28 @@ namespace BookLabel.LabelModule.Controls
 
         public delegate void ValueChanged(object sender, LostFocusEventArgs e);
 
+        public ICommand CompletedCommand
+        {
+            get { return (ICommand)GetValue(CompletedCommandProperty); }
+            set { SetValue(CompletedCommandProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CompletedCommandProperty =
+            DependencyProperty.Register("CompletedCommand", typeof(ICommand), typeof(EditableTextBox), new PropertyMetadata(default(ICommand)));
+
+        public object CompletedCommandParameter
+        {
+            get { return (object)GetValue(CompletedCommandParameterProperty); }
+            set { SetValue(CompletedCommandParameterProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CompletedCommandParameterProperty =
+            DependencyProperty.Register("CompletedCommandParameter", typeof(object), typeof(EditableTextBox), new PropertyMetadata(default(object)));
+
+        public IInputElement CommandTarget { get; set; }
+
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -137,16 +159,21 @@ namespace BookLabel.LabelModule.Controls
         private bool TextModifyComplete(TextBox tb)
         {
             bool result = true;
-            if(RaiseOnOnTextModifyCompleteEvent(Text, true)==false)
+            if (this.CompletedCommand != null)
             {
-                result = false;
-                IsInEditMode = true;
-                if (tb != null)
-                    tb.Focus();
-            }
-            else
-            {
-                IsInEditMode = false;
+                this.CompletedCommand.Execute(Text);
+
+                if (RaiseOnOnTextModifyCompleteEvent(Text, true) == false)
+                {
+                    result = false;
+                    IsInEditMode = true;
+                    if (tb != null)
+                        tb.Focus();
+                }
+                else
+                {
+                    IsInEditMode = false;
+                }
             }
             return result;
         }
