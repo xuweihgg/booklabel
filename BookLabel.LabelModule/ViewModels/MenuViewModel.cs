@@ -130,7 +130,9 @@ namespace BookLabel.LabelModule.ViewModels
         {
             if (catalog != null)
             {
-                catalog.ChirdCatalogs.Add(new CatalogConstruction(Guid.NewGuid().ToString(), "子目录1", catalog.CatalogId));
+                var chcata = new CatalogConstruction(Guid.NewGuid().ToString(), "子目录1", catalog.CatalogId);
+                catalog.ChirdCatalogs.Add(chcata);
+                DataService.InsertLable(chcata);
             }
         }
         public ObservableCollection<CatalogConstruction> Catalogs { get; set; }

@@ -406,7 +406,7 @@ namespace BookLabel.LabelModule.Services
         static DBHelper()
         {
             //初始化ORM
-            InitializeORM();
+            //InitializeORM();
         }
 
         /// <summary>
