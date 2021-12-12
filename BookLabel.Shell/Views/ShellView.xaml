@@ -74,12 +74,6 @@
             <RowDefinition Height="100" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"
-                              MinWidth="200" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="3*" />
-        </Grid.ColumnDefinitions>
 
         <!-- App Banner -->
         <Canvas x:Name="Banner"
@@ -126,20 +120,6 @@
             </TextBlock>
         </Canvas>
 
-        <!-- Left Region -->
-        <Border Grid.Row="1"
-                BorderBrush="#FF4355C1"
-                BorderThickness="2,2,2,2"
-                CornerRadius="4,4,4,4"
-                Margin="8,2,2,8">
-            <ContentControl x:Name="LeftRegion"
-                            regions:RegionManager.RegionName="LeftRegion"
-                           
-                            VerticalContentAlignment="Stretch"
-                            HorizontalContentAlignment="Stretch" />
-            <!--Style="{StaticResource ContentControlRegionStyle}"-->
-        </Border>
-
         <!-- Main Region -->
         <Border Margin="2,2,8,8"
                 Grid.Column="2"
@@ -155,12 +135,5 @@
                             HorizontalContentAlignment="Stretch" />
             <!--Style="{StaticResource ContentControlRegionStyle}"-->
         </Border>
-
-        <GridSplitter Grid.Row="1"
-                      Grid.Column="1"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Stretch"
-                      Background="{x:Null}"
-                      Grid.RowSpan="2" />
     </Grid>
 </Window>

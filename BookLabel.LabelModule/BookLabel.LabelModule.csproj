@@ -111,9 +111,6 @@
     <Compile Include="Services\LabelDetailDataServices.cs" />
     <Compile Include="Services\SqlliteDataService.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
-    <Compile Include="Views\ListView.xaml.cs">
-      <DependentUpon>ListView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\MuenView.xaml.cs">
       <DependentUpon>MuenView.xaml</DependentUpon>
     </Compile>
@@ -127,10 +124,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AddCatalogView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

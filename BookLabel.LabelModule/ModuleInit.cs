@@ -27,7 +27,7 @@ namespace BookLabel.LabelModule
         {
             InitializeDB();
             this.container.RegisterType<ICatalogDataService, CatalogDataService>();
-            this.regionManager.RegisterViewWithRegion(RegionNames.LeftRegion, () => this.container.Resolve<MuenView>());
+            this.regionManager.RegisterViewWithRegion(RegionNames.MainRegion, () => this.container.Resolve<MuenView>());
         }
 
         public void InitializeDB()

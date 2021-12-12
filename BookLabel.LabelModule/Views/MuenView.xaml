@@ -233,81 +233,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
-        <Style x:Key="DefaultTreeViewItem1" TargetType="{x:Type TreeViewItem}">
-            <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Padding" Value="1,0,0,0"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type TreeViewItem}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition MinWidth="19" Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-
-                            <!-- Connecting Lines -->
-                            <Rectangle x:Name="HorLn" Margin="9,1,0,0" Height="1" Stroke="#DCDCDC" SnapsToDevicePixels="True"/>
-                            <Rectangle x:Name="VerLn" Width="1" Stroke="#DCDCDC" Margin="0,0,1,0" Grid.RowSpan="2" SnapsToDevicePixels="true" Fill="White"/>
-                            <ToggleButton Margin="-1,0,0,0" x:Name="Expander" Style="{StaticResource ExpandCollapseToggleStyle}" IsChecked="{Binding Path=IsExpanded, RelativeSource={RelativeSource TemplatedParent}}" ClickMode="Press"/>
-                            <Border Name="Bd" Grid.Column="1" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
-                                <ContentPresenter x:Name="PART_Header" ContentSource="Header" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" MinWidth="20"/>
-                            </Border>
-                            <ItemsPresenter x:Name="ItemsHost" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-
-                            <!-- This trigger changes the connecting lines if the item is the last in the list -->
-                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource LineConverter}}" Value="true">
-                                <Setter TargetName="VerLn" Property="Height" Value="9"/>
-                                <Setter TargetName="VerLn" Property="VerticalAlignment" Value="Top"/>
-                            </DataTrigger>
-                            <Trigger Property="IsExpanded" Value="false">
-                                <Setter TargetName="ItemsHost" Property="Visibility" Value="Collapsed"/>
-                            </Trigger>
-                            <Trigger Property="HasItems" Value="false">
-                                <Setter TargetName="Expander" Property="Visibility" Value="Hidden"/>
-                            </Trigger>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Property="HasHeader" Value="false"/>
-                                    <Condition Property="Width" Value="Auto"/>
-                                </MultiTrigger.Conditions>
-                                <Setter TargetName="PART_Header" Property="MinWidth" Value="75"/>
-                            </MultiTrigger>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Property="HasHeader" Value="false"/>
-                                    <Condition Property="Height" Value="Auto"/>
-                                </MultiTrigger.Conditions>
-                                <Setter TargetName="PART_Header" Property="MinHeight" Value="19"/>
-                            </MultiTrigger>
-                            <Trigger Property="IsSelected" Value="true">
-                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}"/>
-                            </Trigger>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Property="IsSelected" Value="true"/>
-                                    <Condition Property="IsSelectionActive" Value="false"/>
-                                </MultiTrigger.Conditions>
-                                <Setter TargetName="Bd" Property="Background" Value="Green"/>
-                                <Setter Property="Foreground" Value="White"/>
-                            </MultiTrigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
         <!--TreeView样式-->
         <Style x:Key="DefaultTreeView" TargetType="{x:Type TreeView}">
             <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
@@ -341,22 +266,51 @@
         </HierarchicalDataTemplate>
     </UserControl.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Button Content="新增目录" Command="{Binding InsertCatalogCommand}" Height="24" Background="#A145F8" Foreground="White"/>
-        <TreeView Grid.Row="1" Width="250"  Margin="3" x:Name="tree1"   Style="{StaticResource DefaultTreeView}"
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="200" Width="Auto"/>
+            <ColumnDefinition Width="1"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Row="1"
+                BorderBrush="#FF4355C1"
+                BorderThickness="2,2,2,2"
+                CornerRadius="4,4,4,4"
+                Margin="8,2,2,8">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Button Content="新增目录" Command="{Binding InsertCatalogCommand}" Height="24" Background="#A145F8" Foreground="White"/>
+                <TreeView Grid.Row="1" Width="250"  Margin="3" x:Name="tree1"   Style="{StaticResource DefaultTreeView}"
                   ItemTemplate="{StaticResource ItemNode}"   Background="Transparent"
                   ItemsSource="{Binding Catalogs}"  event:TreeViewBehavior.DoubleClickAction="{Binding MouseDoubleClick}"
                   event:TreeViewBehavior.SelectionChangedAction="{Binding SelectionChangedAction }">
-            <TreeView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem  Icon="&#xe6c0;"  Header="增加" Command="{Binding InsertChirdCommand}"  Style="{DynamicResource DefaultMenuItem}"/>
-                    <MenuItem  Icon="&#xe6a1;" Header="修改" Command="{Binding UpdateCatalogCommand}"  Style="{DynamicResource DefaultMenuItem}"/>
-                    <MenuItem  Icon="&#xe69f;" Header="删除" Command="{Binding DeleteCatalogCommand}" Style="{DynamicResource DefaultMenuItem}"/>
-                </ContextMenu>
-            </TreeView.ContextMenu>
-        </TreeView>
+                    <TreeView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem  Icon="&#xe6c0;"  Header="增加" Command="{Binding InsertChirdCommand}"  Style="{DynamicResource DefaultMenuItem}"/>
+                            <MenuItem  Icon="&#xe6a1;" Header="修改" Command="{Binding UpdateCatalogCommand}"  Style="{DynamicResource DefaultMenuItem}"/>
+                            <MenuItem  Icon="&#xe69f;" Header="删除" Command="{Binding DeleteCatalogCommand}" Style="{DynamicResource DefaultMenuItem}"/>
+                        </ContextMenu>
+                    </TreeView.ContextMenu>
+                </TreeView>
+            </Grid>
+           
+        </Border>
+        <GridSplitter Grid.Row="1"
+                      Grid.Column="1"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Stretch"
+                      Background="{x:Null}"
+                      Grid.RowSpan="2" />
+        <Border Margin="2,2,8,8"
+                Grid.Column="2"
+                Grid.Row="1"
+                BorderThickness="2,2,2,2"
+                CornerRadius="4,4,4,4"
+                BorderBrush="#FF4355C1"
+                Grid.RowSpan="2">
+        </Border>
     </Grid>
 </UserControl>
