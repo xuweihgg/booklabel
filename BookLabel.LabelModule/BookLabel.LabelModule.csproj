@@ -92,6 +92,8 @@
     <Compile Include="Events\EventBase.cs" />
     <Compile Include="Events\Events.cs" />
     <Compile Include="Events\ExecuteCommandAction.cs" />
+    <Compile Include="Helper\EventCommandExecuter.cs" />
+    <Compile Include="Helper\TextBoxBehavior.cs" />
     <Compile Include="Helper\TreeViewBehavior.cs" />
     <Compile Include="Helper\ViewHelper.cs" />
     <Compile Include="Interactivity\MouseDoubleClickTrigger.cs" />

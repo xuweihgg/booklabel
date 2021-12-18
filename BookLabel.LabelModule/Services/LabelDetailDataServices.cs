@@ -31,6 +31,30 @@ namespace BookLabel.LabelModule.Services
             return items;
         }
 
+        public List<BookLabelDetail> GetLabelDetailsById(string catalogId)
+        {
+            var items = new List<BookLabelDetail>();
+
+            using (GlobalInfo.SystemDB.GetConnection())
+            {
+                foreach (var item in BookLabelDetailTable.Records.Where(x=>x.CatalogId== catalogId))
+                {
+                    if (item.CatalogId != catalogId)
+                        continue;
+                    items.Add(new BookLabelDetail()
+                    {
+                        BookLabelId = item.BookLabelId,
+                        BoolLabelName = item.BoolLabelName,
+                        CreateTime = item.CreateTime,
+                        LabelPath = item.LabelPath,
+                        CatalogId = item.CatalogId,
+                    });
+                }
+            }
+            
+            return items;
+        }
+
         public bool InsertLable(BookLabelDetail detail)
         {
             int res = 0;

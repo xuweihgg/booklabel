@@ -8,8 +8,9 @@
              xmlns:model="clr-namespace:BookLabel.LabelModule.Models"
              xmlns:control="clr-namespace:BookLabel.LabelModule.Controls"
              xmlns:event="clr-namespace:BookLabel.LabelModule"
+             xmlns:cmd="clr-namespace:BookLabel.LabelModule"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="1000">
     <UserControl.Resources>
         <Style x:Key="FIcon" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="pack://application:,,,/Resource/#iconfont"></Setter>
@@ -249,6 +250,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        
         <HierarchicalDataTemplate x:Key="ItemNode"  DataType="{x:Type model:CatalogConstruction}" ItemsSource="{Binding ChirdCatalogs}" >
             <StackPanel Orientation="Horizontal" >
                 <TextBlock Text="&#xe69a;" Style="{DynamicResource FIcon}"/>
@@ -284,7 +286,7 @@
                 </Grid.RowDefinitions>
                 <Button Content="新增目录" Command="{Binding InsertCatalogCommand}" Height="24" Background="#A145F8" Foreground="White"/>
                 <TreeView Grid.Row="1" Width="250"  Margin="3" x:Name="tree1"   Style="{StaticResource DefaultTreeView}"
-                  ItemTemplate="{StaticResource ItemNode}"   Background="Transparent"
+                  ItemTemplate="{StaticResource ItemNode}"   Background="Transparent" 
                   ItemsSource="{Binding Catalogs}"  event:TreeViewBehavior.DoubleClickAction="{Binding MouseDoubleClick}"
                   event:TreeViewBehavior.SelectionChangedAction="{Binding SelectionChangedAction }">
                     <TreeView.ContextMenu>
@@ -310,7 +312,83 @@
                 BorderThickness="2,2,2,2"
                 CornerRadius="4,4,4,4"
                 BorderBrush="#FF4355C1"
+                
                 Grid.RowSpan="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <GroupBox Header="单本加入" Foreground="White">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="名称" Foreground="White" Height="20"/>
+                        <TextBox Margin="5,0,0,0"  Text="{Binding LableName}" Width="100"  Height="20"/>
+                        <TextBlock Margin="5,0,0,0"  Text="地址" Foreground="White" Height="20"/>
+                        <TextBox Margin="5,0,0,0"  Text="{Binding LabelPath}"  Width="200"  Height="20"/>
+                        <Button Margin="5,0,0,0" Content="文件" Command="{Binding OpenFileCommand}" Width="60" Height="20"/>
+                        <Button Margin="15,0,0,0" Content="增加" Command="{Binding AddBoolLabelCommand}" Width="60"  Height="20"/>
+                        <Button Margin="15,0,0,0"  Content="删除" Command="{Binding DeleteBoolLabelCommand}" Width="60"  Height="20"/>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="批量拖拽" Grid.Row="1" Foreground="White">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <TextBox Text="{Binding DropName}"  AllowDrop="True" TextWrapping="Wrap" 
+                                 event:TextBoxBehavior.PreviewDragOverAction="{Binding PreviewDragOverCommand}"
+                                 event:TextBoxBehavior.PreviewDropAction="{Binding PreviewDropCommand}"/>
+                        <!--<TextBox Text="{Binding DropName}"  AllowDrop="True" TextWrapping="Wrap" >
+                        <i:Interaction.Behaviors>
+                               
+                            </i:Interaction.Behaviors>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="PreviewDragOver">
+                                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl},Path=DataContext.PreviewDragOverCommand}"
+                                   CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type TextBox}}}"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="PreviewDrop">
+                                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl},Path=DataContext.PreviewDropCommand}"
+                                   CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type TextBox}}}"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="GotFocus">
+                                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl},Path=DataContext.GotFocus}"
+                                   CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type TextBox}}}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>-->
+                        <Button Grid.Row="1" Content="添加" Width="60" HorizontalAlignment="Right" Command="{Binding BatchInsertCommand}"/>
+                    </Grid>
+                </GroupBox>
+                <DataGrid Grid.Row="2" DataContext="{Binding ElementName=tree1, Path=SelectedItem}" ItemsSource="{Binding BookLabelDetails}"
+                           EnableColumnVirtualization="False"
+                                           EnableRowVirtualization="True"
+                                           VirtualizingStackPanel.VirtualizationMode="Standard"
+                                           AutoGenerateColumns="False"
+                                           CanUserResizeRows="False"
+                                           SelectionUnit="FullRow"
+                                           CanUserResizeColumns="True" 
+                          SelectedItem="{Binding SelectedBookLabel}">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="名称"  Width="60">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding BoolLabelName}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="地址"  Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding LabelPath}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>
