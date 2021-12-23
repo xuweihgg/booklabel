@@ -19,7 +19,10 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="20"/>
         </Style>
-        
+        <Style  TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="#A145F8"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
         <Style x:Key="ItemsContentBackground" TargetType="{x:Type TreeViewItem}">
             <Setter Property="Background" Value="AliceBlue"></Setter>
         </Style>
@@ -283,8 +286,10 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Button Content="新增目录" Command="{Binding InsertCatalogCommand}" Height="24" Background="#A145F8" Foreground="White"/>
+                <Button Content="新增目录" Command="{Binding InsertCatalogCommand}" Height="24"/>
                 <TreeView Grid.Row="1" Width="250"  Margin="3" x:Name="tree1"   Style="{StaticResource DefaultTreeView}"
                   ItemTemplate="{StaticResource ItemNode}"   Background="Transparent" 
                   ItemsSource="{Binding Catalogs}"  event:TreeViewBehavior.DoubleClickAction="{Binding MouseDoubleClick}"
@@ -297,6 +302,8 @@
                         </ContextMenu>
                     </TreeView.ContextMenu>
                 </TreeView>
+                <TextBlock Grid.Row="2" Text="标签"/>
+                <ListBox Grid.Row="3" ItemsSource="{Binding BookLables}" SelectedItem="{Binding SelectedLabel}"/>
             </Grid>
            
         </Border>
@@ -359,7 +366,12 @@
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </TextBox>-->
-                        <Button Grid.Row="1" Content="添加" Width="60" HorizontalAlignment="Right" Command="{Binding BatchInsertCommand}"/>
+                        <StackPanel  Grid.Row="1"  Orientation="Horizontal">
+                            <TextBlock Text="设置标签"/>
+                            <TextBox Text="{Binding BookLabel}" Width="300"/>
+                            <Button Content="添加" Width="60" HorizontalAlignment="Right" Command="{Binding BatchInsertCommand}"/>
+                            <Button Content="编辑" Margin="5,0,0,0" Width="60" HorizontalAlignment="Right" Command="{Binding BatchInsertCommand}"/>
+                        </StackPanel>
                     </Grid>
                 </GroupBox>
                 <DataGrid Grid.Row="2" DataContext="{Binding ElementName=tree1, Path=SelectedItem}" ItemsSource="{Binding BookLabelDetails}"

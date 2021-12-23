@@ -473,11 +473,13 @@ namespace BookLabel.LabelModule.Services
                 Directory.CreateDirectory(Path.GetDirectoryName(dbPath));
 
             //打开/创建数据库连接
-            DBConnectionPool pool = new DBConnectionPool("SQLite", string.Format("Data Source={0};Version=3;Journal Mode=Off;Synchronous=Off;Password={1};", dbPath, password), dbPath, maxConnNum);
+            DBConnectionPool pool = null;
 
             //初始化/升级数据库
             try
             {
+                pool = new DBConnectionPool("SQLite", string.Format("Data Source={0};Version=3;Journal Mode=Off;Synchronous=Off;Password={1};", dbPath, password), dbPath, maxConnNum);
+
                 using (DBConnection conn = pool.GetConnection())
                 {
                     if (!typeof(T).IsAbstract)
@@ -727,7 +729,7 @@ namespace BookLabel.LabelModule.Services
                 try
                 {
                     //测试db文件是否能够正常打开
-                    using (var conn = GetConnection(5000))
+                    using (var conn = GetConnection(3000))
                     {
                     }
                 }

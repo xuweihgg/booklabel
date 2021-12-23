@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "ptuPVf0mNlTtQZTB2cB7Ks8N1anqeNGLmDu45SUrb6v3Y/KedmZ2Rx+pPYlr+/0cdE+B5Rau2ZbSjotg0yqwHQ==",
+  "success": true,
+  "projectFilePath": "D:\\xuwei\\WorkSpace\\gitspace\\booklabel\\BookLabel.LabelModule\\BookLabel.LabelModule.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.19\\microsoft.xaml.behaviors.wpf.1.1.19.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\prism.core\\8.0.0.1909\\prism.core.8.0.0.1909.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\prism.wpf\\8.0.0.1909\\prism.wpf.8.0.0.1909.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.5.2\\system.runtime.compilerservices.unsafe.4.5.2.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\unity\\5.11.10\\unity.5.11.10.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,138 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\xuwei\\WorkSpace\\gitspace\\booklabel\\BookLabel.Shell\\BookLabel.Shell.csproj": {}
+  },
+  "projects": {
+    "D:\\xuwei\\WorkSpace\\gitspace\\booklabel\\BookLabel.LabelModule\\BookLabel.LabelModule.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\xuwei\\WorkSpace\\gitspace\\booklabel\\BookLabel.LabelModule\\BookLabel.LabelModule.csproj",
+        "projectName": "BookLabel.LabelModule",
+        "projectPath": "D:\\xuwei\\WorkSpace\\gitspace\\booklabel\\BookLabel.LabelModule\\BookLabel.LabelModule.csproj",
+        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "outputPath": "D:\\xuwei\\WorkSpace\\gitspace\\booklabel\\BookLabel.LabelModule\\obj\\",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net472"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net472": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net472": {
+          "dependencies": {
+            "Prism.Core": {
+              "target": "Package",
+              "version": "[8.0.0.1909, )"
+            },
+            "Prism.Wpf": {
+              "target": "Package",
+              "version": "[8.0.0.1909, )"
+            },
+            "Unity": {
+              "target": "Package",
+              "version": "[5.11.10, )"
+            }
+          }
+        }
+      },
+      "runtimes": {
+        "win": {
+          "#import": []
+        },
+        "win-x64": {
+          "#import": []
+        },
+        "win-x86": {
+          "#import": []
+        }
+      }
+    },
+    "D:\\xuwei\\WorkSpace\\gitspace\\booklabel\\BookLabel.Shell\\BookLabel.Shell.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\xuwei\\WorkSpace\\gitspace\\booklabel\\BookLabel.Shell\\BookLabel.Shell.csproj",
+        "projectName": "BookLabel.Shell",
+        "projectPath": "D:\\xuwei\\WorkSpace\\gitspace\\booklabel\\BookLabel.Shell\\BookLabel.Shell.csproj",
+        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "outputPath": "D:\\xuwei\\WorkSpace\\gitspace\\booklabel\\BookLabel.Shell\\obj\\",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net472"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net472": {
+            "projectReferences": {
+              "D:\\xuwei\\WorkSpace\\gitspace\\booklabel\\BookLabel.LabelModule\\BookLabel.LabelModule.csproj": {
+                "projectPath": "D:\\xuwei\\WorkSpace\\gitspace\\booklabel\\BookLabel.LabelModule\\BookLabel.LabelModule.csproj"
+              }
+            }
+          }
+        }
+      },
+      "frameworks": {
+        "net472": {
+          "dependencies": {
+            "Prism.Core": {
+              "target": "Package",
+              "version": "[8.0.0.1909, )"
+            },
+            "Prism.Unity": {
+              "target": "Package",
+              "version": "[8.0.0.1909, )"
+            },
+            "Prism.Wpf": {
+              "target": "Package",
+              "version": "[8.0.0.1909, )"
+            }
+          }
+        }
+      },
+      "runtimes": {
+        "win": {
+          "#import": []
+        },
+        "win-x64": {
+          "#import": []
+        },
+        "win-x86": {
+          "#import": []
+        }
+      }
+    }
+  }
+}

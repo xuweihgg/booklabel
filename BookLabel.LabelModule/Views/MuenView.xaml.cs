@@ -28,26 +28,5 @@ namespace BookLabel.LabelModule.Views
             InitializeComponent();
             this.DataContext = viewModel;
         }
-
-        private void TextBox_PreviewDrop(object sender, DragEventArgs e)
-        {
-            StringBuilder builder = new StringBuilder();
-            foreach (var item in ((System.Array)e.Data.GetData(DataFormats.FileDrop)))
-            {
-                builder.AppendLine(item.ToString());
-            }
-            ((TextBox)sender).Text = builder.ToString();
-        }
-
-        private void TextBox_PreviewDragOver(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                e.Effects = DragDropEffects.Link;
-                e.Handled = true;
-            }
-            else
-                e.Effects = DragDropEffects.None;
-        }
     }
 }

@@ -1,15 +1,15 @@
 ﻿using BookLabel.LabelModule.Models;
 using BookLabel.LabelModule.Services;
 using BookLabel.LabelModule.Views;
-using Microsoft.Practices.Prism.Modularity;
-using Microsoft.Practices.Prism.Regions;
-using Microsoft.Practices.Unity;
+using Prism.Modularity;
+using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using Unity;
 
 namespace BookLabel.LabelModule
 {
@@ -23,12 +23,6 @@ namespace BookLabel.LabelModule
             this.container = container;
             this.regionManager = regionManager;
         }
-        public void Initialize()
-        {
-            InitializeDB();
-            this.container.RegisterType<ICatalogDataService, CatalogDataService>();
-            this.regionManager.RegisterViewWithRegion(RegionNames.MainRegion, () => this.container.Resolve<MuenView>());
-        }
 
         public void InitializeDB()
         {
@@ -38,6 +32,18 @@ namespace BookLabel.LabelModule
                 System.Data.SQLite.SQLiteConnection.CreateFile(dbpath);
             }
             GlobalInfo.SystemDB = DBHelper.CreateDBConnectionPool<CatalogConstructionUpdater>(dbpath, 1, null, 1);
+        }
+
+        public void OnInitialized(Prism.Ioc.IContainerProvider containerProvider)
+        {
+            InitializeDB();
+            this.container.RegisterType<ICatalogDataService, CatalogDataService>();
+            this.regionManager.RegisterViewWithRegion(RegionNames.MainRegion,typeof(MuenView));
+        }
+
+        public void RegisterTypes(Prism.Ioc.IContainerRegistry containerRegistry)
+        {
+            
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using BookLabel.LabelModule.Controls;
 using BookLabel.LabelModule.Models;
 using BookLabel.LabelModule.Services;
-using Microsoft.Practices.Prism.Commands;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,20 +27,23 @@ namespace BookLabel.LabelModule.ViewModels
         public MenuViewModel(ICatalogDataService dataService)
         {
             DataService = dataService;
-            Catalogs = new ObservableCollection<CatalogConstruction>(dataService.GetLabelDetails());
+            var catalogs = dataService.GetLabelDetails();
+            Catalogs = new ObservableCollection<CatalogConstruction>(catalogs);
             this.InsertCatalogCommand = new DelegateCommand(InsertCatalog);
             this.UpdateCatalogCommand = new DelegateCommand(UpdateCatalog);
             this.DeleteCatalogCommand = new DelegateCommand(DeleteCatalog);
             this.InsertChirdCommand = new DelegateCommand(InsertChird);
-            this.OnTextModifyCommand = new DelegateCommand<string>((cc)=> { OnTextModifyChanged(cc); });
-            SelectionChangedAction = new Action<object>(cc=>SelectedChanage(cc));
+            this.OnTextModifyCommand = new DelegateCommand<string>((cc) => { OnTextModifyChanged(cc); });
+            SelectionChangedAction = new Action<object>(cc => SelectedChanage(cc));
             MouseDoubleClick = new Action<object>((cc) => TreeViewDoubleClick(cc));
 
             AddBoolLabelCommand = new DelegateCommand(OnAddBoolLabel);
             DeleteBoolLabelCommand = new DelegateCommand(OnDeleteBoolLabel);
             OpenFileCommand = new DelegateCommand(OnOpenFile);
             detailDataService = new LabelDetailDataServices();
-            PreviewDragOverCommand = new Action<object>((cc)=>OnPreviewDragOver(cc));
+            var labels = detailDataService.GetLabelDetails();
+            BookLables = new ObservableCollection<string>(labels.Select((x) => x.BoolLabelName).Distinct());
+            PreviewDragOverCommand = new Action<object>((cc) => OnPreviewDragOver(cc));
             PreviewDropCommand = new Action<object>((cc) => OnPreviewDrop(cc));
             BatchInsertCommand = new DelegateCommand(BatchInsertDetail);
         }
@@ -175,6 +178,9 @@ namespace BookLabel.LabelModule.ViewModels
                 updateFlag = 1;
             }
         }
+
+        public ObservableCollection<string> BookLables { get; set; }
+        public string SelectedLabel { get; set; }
         #endregion 左侧菜单操作
 
         #region 明细操作界面
