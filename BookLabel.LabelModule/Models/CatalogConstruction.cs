@@ -18,7 +18,6 @@ namespace BookLabel.LabelModule.Models
             this.CatalogId = catalogid;
             this.CatalogName = catalogname;
             this.CatalogParentId = catalogParentid;
-            this.BookLabelDetails = new ObservableCollection<BookLabelDetail>();
             this.ChirdCatalogs = new ObservableCollection<CatalogConstruction>();
         }
         public string CatalogId { get; set; }
@@ -35,8 +34,6 @@ namespace BookLabel.LabelModule.Models
             get { return isInEditMode; }
             set { isInEditMode = value; OnPropertyChanged("isInEditMode"); }
         }
-
-        public ObservableCollection<BookLabelDetail> BookLabelDetails { get; set; }
 
         public ObservableCollection<CatalogConstruction> ChirdCatalogs { get; set; }
 

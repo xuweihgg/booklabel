@@ -24,11 +24,10 @@ namespace BookLabel.LabelModule.ViewModels
 {
     public class MenuViewModel: INotifyPropertyChanged
     {
-        public MenuViewModel(ICatalogDataService dataService)
+        public MenuViewModel()
         {
-            DataService = dataService;
-            var catalogs = dataService.GetLabelDetails();
-            Catalogs = new ObservableCollection<CatalogConstruction>(catalogs);
+            Catalogs = new ObservableCollection<CatalogConstruction>(DataCoach.GetInstance().GetCatalogs());
+            this.BookLabelDetails = new ObservableCollection<BookLabelDetail>();
             this.InsertCatalogCommand = new DelegateCommand(InsertCatalog);
             this.UpdateCatalogCommand = new DelegateCommand(UpdateCatalog);
             this.DeleteCatalogCommand = new DelegateCommand(DeleteCatalog);
@@ -40,8 +39,7 @@ namespace BookLabel.LabelModule.ViewModels
             AddBoolLabelCommand = new DelegateCommand(OnAddBoolLabel);
             DeleteBoolLabelCommand = new DelegateCommand(OnDeleteBoolLabel);
             OpenFileCommand = new DelegateCommand(OnOpenFile);
-            detailDataService = new LabelDetailDataServices();
-            var labels = detailDataService.GetLabelDetails();
+            var labels = DataCoach.GetInstance().GetBookLabelDetais();
             BookLables = new ObservableCollection<string>(labels.Select((x) => x.BoolLabelName).Distinct());
             PreviewDragOverCommand = new Action<object>((cc) => OnPreviewDragOver(cc));
             PreviewDropCommand = new Action<object>((cc) => OnPreviewDrop(cc));
@@ -49,7 +47,6 @@ namespace BookLabel.LabelModule.ViewModels
         }
 
         #region 左侧菜单操作
-        ICatalogDataService DataService;
         /// <summary>
         /// 目录描述改变
         /// </summary>
@@ -79,6 +76,10 @@ namespace BookLabel.LabelModule.ViewModels
         /// </summary>
         public ObservableCollection<CatalogConstruction> Catalogs { get; set; }
 
+        /// <summary>
+        /// 明细数据，分为两个维度展示，目录维度和书签维度
+        /// </summary>
+        public ObservableCollection<BookLabelDetail> BookLabelDetails { get; set; }
         public CatalogConstruction Catalog { get; set; }
         /// <summary>
         /// 0-新增，1-修改，2-删除
@@ -104,9 +105,9 @@ namespace BookLabel.LabelModule.ViewModels
             {
                 Catalog.CatalogName = text;
                 if (updateFlag == 0)
-                    DataService.InsertLable(Catalog);
+                    DataCoach.GetInstance().AddCatalog(Catalog);
                 else if (updateFlag == 1)
-                    DataService.Update(Catalog);
+                    DataCoach.GetInstance().UpdateCatalog(Catalog);
                 oldValue = text;
             }
             catch (Exception ex)
@@ -124,7 +125,7 @@ namespace BookLabel.LabelModule.ViewModels
             Catalog = new CatalogConstruction(Guid.NewGuid().ToString(), "目录1");
             Catalog.IsInEditMode = true;
             Catalogs.Add(Catalog);
-            DataService.InsertLable(Catalog);
+            DataCoach.GetInstance().AddCatalog(Catalog);
             updateFlag = 0;
         }
 
@@ -143,7 +144,7 @@ namespace BookLabel.LabelModule.ViewModels
             updateFlag = 2;
             try
             {
-                DataService.Delete(Catalog);
+                DataCoach.GetInstance().DeletCatalog(Catalog);
                 Catalogs.Remove(Catalog);
             }
             catch (Exception ex)
@@ -158,15 +159,18 @@ namespace BookLabel.LabelModule.ViewModels
             {
                 var chcata = new CatalogConstruction(Guid.NewGuid().ToString(), "子目录1", Catalog.CatalogId);
                 Catalog.ChirdCatalogs.Add(chcata);
-                DataService.InsertLable(chcata);
+                DataCoach.GetInstance().AddCatalog(chcata);
             }
         }
 
         private void SelectedChanage(object cc)
         {
+            BookLabelDetails.Clear();
             if (cc is CatalogConstruction)
             {
                 Catalog = cc as CatalogConstruction;
+                var items = DataCoach.GetInstance().GetBookLabelDetais().Where(x => x.CatalogId == Catalog.CatalogId).ToList();
+                items.ForEach(x => BookLabelDetails.Add(x));
             }
         }
 
@@ -184,7 +188,6 @@ namespace BookLabel.LabelModule.ViewModels
         #endregion 左侧菜单操作
 
         #region 明细操作界面
-        ILabelDetailDataServices detailDataService;
         public string LableName { get; set; }
         public string LabelPath { get; set; }
 
@@ -224,8 +227,8 @@ namespace BookLabel.LabelModule.ViewModels
             if (string.IsNullOrWhiteSpace(LabelPath))
                 return;
             var detail = new BookLabelDetail { BookLabelId = Guid.NewGuid().ToString(), BoolLabelName = LableName, CatalogId = Catalog.CatalogId, CreateTime = DateTime.Now, LabelPath = LabelPath };
-            Catalog.BookLabelDetails.Add(detail);
-            detailDataService.InsertLable(detail);
+            BookLabelDetails.Add(detail);
+            DataCoach.GetInstance().InsertLable(detail);
 
         }
         public BookLabelDetail SelectedBookLabel { get; set; }
@@ -236,8 +239,8 @@ namespace BookLabel.LabelModule.ViewModels
                 return;
             if (SelectedBookLabel == null)
                 return;
-            Catalog.BookLabelDetails.Remove(SelectedBookLabel);
-            detailDataService.Delete(SelectedBookLabel.BookLabelId);
+            BookLabelDetails.Remove(SelectedBookLabel);
+            DataCoach.GetInstance().DeletLable(SelectedBookLabel);
         }
         public Action<object> PreviewDragOverCommand { get; set; }
         public void OnPreviewDragOver(object obj)
@@ -292,9 +295,9 @@ namespace BookLabel.LabelModule.ViewModels
                 foreach (var item in strs)
                 {
                     string filename = Path.GetFileName(item);
-                    var detail = new BookLabelDetail { BookLabelId = Guid.NewGuid().ToString(), BoolLabelName = filename, CatalogId = Catalog.CatalogId, CreateTime = DateTime.Now, LabelPath = item };
-                    Catalog.BookLabelDetails.Add(detail);
-                    detailDataService.InsertLable(detail);
+                    var detail = new BookLabelDetail { BookLabelId = Guid.NewGuid().ToString(), BoolLabelName = LableName, CatalogId = Catalog.CatalogId, CreateTime = DateTime.Now, LabelPath = item };
+                    BookLabelDetails.Add(detail);
+                    DataCoach.GetInstance().InsertLable(detail);
                 }
             }
         }

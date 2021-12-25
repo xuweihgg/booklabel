@@ -65,6 +65,7 @@
       <DependentUpon>EditableTextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SelectTreeView.cs" />
+    <Compile Include="DataCoach\DataCoach.cs" />
     <Compile Include="Events\Attachment.cs" />
     <Compile Include="Events\EventBase.cs" />
     <Compile Include="Events\Events.cs" />
@@ -94,9 +95,7 @@
       <DependentUpon>MuenView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Page Include="Controls\EditableTextBox.xaml">
       <SubType>Designer</SubType>

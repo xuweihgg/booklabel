@@ -303,7 +303,8 @@
                     </TreeView.ContextMenu>
                 </TreeView>
                 <TextBlock Grid.Row="2" Text="标签"/>
-                <ListBox Grid.Row="3" ItemsSource="{Binding BookLables}" SelectedItem="{Binding SelectedLabel}"/>
+                <ListBox Background="Transparent" Foreground="White" 
+                    Grid.Row="3" ItemsSource="{Binding BookLables}" SelectedItem="{Binding SelectedLabel}"/>
             </Grid>
            
         </Border>
@@ -368,20 +369,20 @@
                         </TextBox>-->
                         <StackPanel  Grid.Row="1"  Orientation="Horizontal">
                             <TextBlock Text="设置标签"/>
-                            <TextBox Text="{Binding BookLabel}" Width="300"/>
+                            <TextBox Text="{Binding LableName}" Width="300"/>
                             <Button Content="添加" Width="60" HorizontalAlignment="Right" Command="{Binding BatchInsertCommand}"/>
                             <Button Content="编辑" Margin="5,0,0,0" Width="60" HorizontalAlignment="Right" Command="{Binding BatchInsertCommand}"/>
                         </StackPanel>
                     </Grid>
                 </GroupBox>
-                <DataGrid Grid.Row="2" DataContext="{Binding ElementName=tree1, Path=SelectedItem}" ItemsSource="{Binding BookLabelDetails}"
+                <DataGrid Grid.Row="2"  ItemsSource="{Binding BookLabelDetails}"
                            EnableColumnVirtualization="False"
                                            EnableRowVirtualization="True"
                                            VirtualizingStackPanel.VirtualizationMode="Standard"
                                            AutoGenerateColumns="False"
                                            CanUserResizeRows="False"
-                                           SelectionUnit="FullRow"
-                                           CanUserResizeColumns="True" 
+                                           SelectionUnit="FullRow"  RowBackground="AliceBlue"  HorizontalGridLinesBrush="#FF4355C1" VerticalGridLinesBrush="#FF4355C1"
+                                           CanUserResizeColumns="True"  Background="Transparent" BorderBrush="#FF4355C1" 
                           SelectedItem="{Binding SelectedBookLabel}">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="名称"  Width="60">

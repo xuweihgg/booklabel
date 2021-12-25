@@ -70,4 +70,3 @@ D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Debug\BookLabel.
 D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Debug\BookLabel.LabelModule.csproj.CoreCompileInputs.cache
 D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Debug\BookLabel.LabelModule.dll
 D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Debug\BookLabel.LabelModule.pdb
-D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Debug\BookLabel.LabelModule.csproj.AssemblyReference.cache

@@ -1,3 +1,6 @@
 bin
 .vs
 packages
+BookLabel.LabelModule/bin/
+BookLabel.LabelModule/obj/
+BookLabel.Shell/bin

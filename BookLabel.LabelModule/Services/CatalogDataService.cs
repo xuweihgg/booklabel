@@ -36,13 +36,6 @@ namespace BookLabel.LabelModule.Services
                 item.ChirdCatalogs = new System.Collections.ObjectModel.ObservableCollection<CatalogConstruction>(items.Where(x => x.CatalogParentId == item.CatalogId));
                 catas.Add(item);
             }
-            foreach (var item in catas)
-            {
-                item.BookLabelDetails = new System.Collections.ObjectModel.ObservableCollection<BookLabelDetail>(dataServices.GetLabelDetailsById(item.CatalogId));
-                foreach(var detail in item.ChirdCatalogs)
-                    detail.BookLabelDetails = new System.Collections.ObjectModel.ObservableCollection<BookLabelDetail>(dataServices.GetLabelDetailsById(detail.CatalogId)); 
-            }
-            dataServices.GetLabelDetails();
             return catas;
         }
 
@@ -90,12 +83,10 @@ namespace BookLabel.LabelModule.Services
             {
                 res = CatalogConstructionTable.Records.Delete(x => x.CatalogId == detail.CatalogId);
             }
-            if (detail.BookLabelDetails != null && detail.BookLabelDetails.Any())
+
+            using (GlobalInfo.SystemDB.GetConnection())
             {
-                using (GlobalInfo.SystemDB.GetConnection())
-                {
-                    res = BookLabelDetailTable.Records.Delete(x => x.CatalogId == detail.CatalogId);
-                }
+                res = BookLabelDetailTable.Records.Delete(x => x.CatalogId == detail.CatalogId);
             }
             return res > 0;
         }
