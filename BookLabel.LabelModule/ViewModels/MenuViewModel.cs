@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -44,6 +45,7 @@ namespace BookLabel.LabelModule.ViewModels
             PreviewDragOverCommand = new Action<object>((cc) => OnPreviewDragOver(cc));
             PreviewDropCommand = new Action<object>((cc) => OnPreviewDrop(cc));
             BatchInsertCommand = new DelegateCommand(BatchInsertDetail);
+            OpenCurrentFileCommand = new DelegateCommand(OpenCurrentFile);
         }
 
         #region 左侧菜单操作
@@ -184,7 +186,22 @@ namespace BookLabel.LabelModule.ViewModels
         }
 
         public ObservableCollection<string> BookLables { get; set; }
-        public string SelectedLabel { get; set; }
+
+        private string selectedLabel;
+        public string SelectedLabel
+        {
+            get
+            {
+                return selectedLabel;
+            }
+            set
+            {
+                selectedLabel = value;
+                BookLabelDetails.Clear();
+                var items = DataCoach.GetInstance().GetBookLabelDetais().Where(x => x.BoolLabelName == selectedLabel).ToList();
+                items.ForEach(x=>BookLabelDetails.Add(x));
+            }
+        }
         #endregion 左侧菜单操作
 
         #region 明细操作界面
@@ -229,7 +246,8 @@ namespace BookLabel.LabelModule.ViewModels
             var detail = new BookLabelDetail { BookLabelId = Guid.NewGuid().ToString(), BoolLabelName = LableName, CatalogId = Catalog.CatalogId, CreateTime = DateTime.Now, LabelPath = LabelPath };
             BookLabelDetails.Add(detail);
             DataCoach.GetInstance().InsertLable(detail);
-
+            if (!BookLables.Any(x => x == LableName))
+                BookLables.Add(LableName);
         }
         public BookLabelDetail SelectedBookLabel { get; set; }
         public DelegateCommand DeleteBoolLabelCommand { get; set; }
@@ -288,7 +306,11 @@ namespace BookLabel.LabelModule.ViewModels
         {
             if (Catalog == null)
                 return;
-          
+            if (string.IsNullOrWhiteSpace(LableName))
+            {
+                MessageBox.Show("请输入标签名称");
+                return;
+            }
             if (!string.IsNullOrWhiteSpace(DropName))
             {
                 var strs = DropName.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
@@ -298,6 +320,58 @@ namespace BookLabel.LabelModule.ViewModels
                     var detail = new BookLabelDetail { BookLabelId = Guid.NewGuid().ToString(), BoolLabelName = LableName, CatalogId = Catalog.CatalogId, CreateTime = DateTime.Now, LabelPath = item };
                     BookLabelDetails.Add(detail);
                     DataCoach.GetInstance().InsertLable(detail);
+                }
+                if (!BookLables.Any(x => x == LableName))
+                    BookLables.Add(LableName);
+            }
+        }
+
+        public DelegateCommand OpenCurrentFileCommand { get; set; }
+
+        private void OpenCurrentFile()
+        {
+            if (SelectedBookLabel != null)
+            {
+                Process process = new Process();
+                ProcessStartInfo processStartInfo = new ProcessStartInfo(SelectedBookLabel.LabelPath);
+                process.StartInfo = processStartInfo;
+                #region 下面这段被注释掉代码（可以用来全屏打开代码）
+                ////建立新的系统进程    
+                //System.Diagnostics.Process process = new System.Diagnostics.Process();
+                ////设置文件名，此处为图片的真实路径+文件名（需要有后缀）    
+                //process.StartInfo.FileName = NewFileName;
+                ////此为关键部分。设置进程运行参数，此时为最大化窗口显示图片。    
+                //process.StartInfo.Arguments = "rundll32.exe C://WINDOWS//system32//shimgvw.dll,ImageView_Fullscreen";
+                //// 此项为是否使用Shell执行程序，因系统默认为true，此项也可不设，但若设置必须为true    
+                //process.StartInfo.UseShellExecute = true;
+                #endregion
+                try
+                {
+                    process.Start();
+                    try
+                    {
+                        // process.WaitForExit();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    try
+                    {
+                        if (process != null)
+                        {
+                            process.Close();
+                            process = null;
+                        }
+                    }
+                    catch { }
                 }
             }
         }
