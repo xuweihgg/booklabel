@@ -4,6 +4,6 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:local="clr-namespace:BookLabel.Shell">
     <Application.Resources>
-         
+        <ResourceDictionary Source="pack://application:,,,/BookLabel.LabelModule;component/Resource/TreeviewStyle.xaml"/>
     </Application.Resources>
 </prism:PrismApplication>

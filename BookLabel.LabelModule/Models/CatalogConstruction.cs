@@ -19,6 +19,7 @@ namespace BookLabel.LabelModule.Models
             this.CatalogName = catalogname;
             this.CatalogParentId = catalogParentid;
             this.ChirdCatalogs = new ObservableCollection<CatalogConstruction>();
+            this.BookLabelDetails = new ObservableCollection<BookLabelDetail>();
         }
         public string CatalogId { get; set; }
 
@@ -27,6 +28,8 @@ namespace BookLabel.LabelModule.Models
         public string CatalogParentId { get; set; }
 
         public DateTime CatalogCreateDate { get; set; }
+
+        public ObservableCollection<BookLabelDetail> BookLabelDetails { get; set; }
 
         private bool isInEditMode;
         public bool IsInEditMode

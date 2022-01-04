@@ -1,0 +1,92 @@
+﻿<UserControl x:Class="BookLabel.LabelModule.Views.ParseLableView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BookLabel.LabelModule.Views"
+             xmlns:event="clr-namespace:BookLabel.LabelModule"
+             xmlns:control="clr-namespace:BookLabel.LabelModule.Controls"
+              xmlns:model="clr-namespace:BookLabel.LabelModule.Models"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <HierarchicalDataTemplate x:Key="ItemNode"  DataType="{x:Type model:CatalogConstruction}" ItemsSource="{Binding ChirdCatalogs}" >
+            <StackPanel Orientation="Horizontal" >
+                <TextBlock Text="&#xe69a;" Style="{DynamicResource FIcon}"/>
+                <control:EditableTextBox Text="{Binding CatalogName}" IsEditable="True" IsInEditMode="{Binding IsInEditMode, Mode=TwoWay}"  
+                                         FontSize="12" MinWidth="100" VerticalAlignment="Center" CompletedCommand="{Binding DataContext.OnTextModifyCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                   CompletedCommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=2, AncestorType={x:Type control:EditableTextBox}}}">
+                </control:EditableTextBox>
+            </StackPanel>
+        </HierarchicalDataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2">
+            <TextBox Text="{Binding FolderPath}" Width="200"></TextBox>
+            <Button Content="选择目录" Margin="5,0,0,0" Command="{Binding OpenFolderCommand}"/>
+            <!--<Button Content="解析目录" Margin="5,0,0,0" Command="{Binding ParseFolderCommand}"/>-->
+        </StackPanel>
+        <Border  Grid.Row="1">
+            <Grid>
+                <TreeView  x:Name="tree1" Style="{DynamicResource DefaultTreeView}"  ItemTemplate="{StaticResource ItemNode}" Background="Transparent" 
+                  ItemsSource="{Binding Catalogs}"  event:TreeViewBehavior.SelectionChangedAction="{Binding SelectionChangedAction }" ></TreeView>
+            </Grid>
+        </Border>
+
+        <DataGrid Grid.Row="1" Grid.Column="1"  ItemsSource="{Binding BookLabelDetails}" DataContext="{Binding ElementName=tree1, Path=SelectedItem}"
+                  Background="Transparent"  AutoGenerateColumns="False" SelectionUnit="FullRow">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsChecked}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding DataContext.IsChecked ,RelativeSource={RelativeSource AncestorType={x:Type UserControl}} }" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                </DataGridTemplateColumn>
+                <!--<DataGridCheckBoxColumn Header="选择"  Binding="{Binding IsChecked ,UpdateSourceTrigger=PropertyChanged}">
+                    <DataGridCheckBoxColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding DataContext.IsChecked ,RelativeSource={RelativeSource AncestorType={x:Type UserControl}} }" />
+                        </DataTemplate>
+                    </DataGridCheckBoxColumn.HeaderTemplate>
+                </DataGridCheckBoxColumn>-->
+                <DataGridTextColumn Header="名称" Binding="{Binding Path=BoolLabelName }"/>
+                <DataGridTextColumn Header="目录" Binding="{Binding Path=LabelPath}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <ListBox  Grid.Row="2" Grid.Column="0"  ItemsSource="{Binding BookLables}" SelectedItem="{Binding SelectedLabel}" Background="Transparent"></ListBox>
+
+        <Grid  Grid.Row="2" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <TextBox Text="{Binding LabelName}" Width="200" Height="25"/>
+                <Button Content="添加" Margin="5,0,0,0" Width="40" Height="25" Command="{Binding AddBookLabelCommand}"/>
+                <Button Content="修改" Margin="5,0,0,0" Width="40" Height="25" Command="{Binding ModifyBookLabelCommand}"/>
+            </StackPanel>
+            <DataGrid Grid.Row="1" ItemsSource="{Binding BookLabelDetails}" Background="Transparent"  AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="名称" Binding="{Binding Path=BoolLabelName }"/>
+                    <DataGridTextColumn Header="目录" Binding="{Binding Path=LabelPath}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</UserControl>

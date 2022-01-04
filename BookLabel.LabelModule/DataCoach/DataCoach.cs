@@ -57,6 +57,15 @@ namespace BookLabel.LabelModule
             return bookLabelDetails;
         }
 
+        public List<BookLabelDetail> GetBookLabelDetais(string bookLabelName)
+        {
+            if (bookLabelDetails != null)
+            {
+                return bookLabelDetails.Where(x => x.BoolLabelName == bookLabelName).ToList();
+            }
+            return null;
+        }
+
         public bool AddCatalog(CatalogConstruction catalog)
         {
             if (catalog == null)

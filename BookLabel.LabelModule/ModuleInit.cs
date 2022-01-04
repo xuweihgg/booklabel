@@ -38,7 +38,7 @@ namespace BookLabel.LabelModule
         {
             InitializeDB();
             this.container.RegisterType<ICatalogDataService, CatalogDataService>();
-            this.regionManager.RegisterViewWithRegion(RegionNames.MainRegion,typeof(MuenView));
+            this.regionManager.RegisterViewWithRegion(RegionNames.MainRegion,typeof(ParseLableView));
         }
 
         public void RegisterTypes(Prism.Ioc.IContainerRegistry containerRegistry)

@@ -9,6 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BookLabel.LabelModule</RootNamespace>
     <AssemblyName>BookLabel.LabelModule</AssemblyName>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -73,9 +74,11 @@
     <Compile Include="Helper\EventCommandExecuter.cs" />
     <Compile Include="Helper\TextBoxBehavior.cs" />
     <Compile Include="Helper\TreeViewBehavior.cs" />
+    <Compile Include="Helper\UtityHelper.cs" />
     <Compile Include="Helper\ViewHelper.cs" />
     <Compile Include="Interactivity\MouseDoubleClickTrigger.cs" />
     <Compile Include="Interactivity\TreeViewMouseRightButtonSelectionBehavior.cs" />
+    <Compile Include="ViewModels\ParseLableViewModel.cs" />
     <Compile Include="Views\AddCatalogView.xaml.cs">
       <DependentUpon>AddCatalogView.xaml</DependentUpon>
     </Compile>
@@ -94,10 +97,17 @@
     <Compile Include="Views\MuenView.xaml.cs">
       <DependentUpon>MuenView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ParseLableView.xaml.cs">
+      <DependentUpon>ParseLableView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <Page Include="Controls\EditableTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resource\TreeviewStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -106,6 +116,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MuenView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ParseLableView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

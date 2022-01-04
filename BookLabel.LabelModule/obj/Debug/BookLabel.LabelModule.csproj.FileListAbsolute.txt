@@ -60,14 +60,16 @@ D:\xuwei\WorkSpace\gitspace\booklabel\bin\Debug\BookLabel.LabelModule.pdb
 D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Debug\Controls\EditableTextBox.g.cs
 D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Debug\Views\AddCatalogView.g.cs
 D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Debug\Views\MuenView.g.cs
+D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Debug\Views\ParseLableView.g.cs
 D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Debug\GeneratedInternalTypeHelper.g.cs
 D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Debug\BookLabel.LabelModule_MarkupCompile.cache
 D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Debug\BookLabel.LabelModule_MarkupCompile.lref
 D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Debug\Controls\EditableTextBox.baml
+D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Debug\Resource\TreeviewStyle.baml
 D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Debug\Views\AddCatalogView.baml
 D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Debug\Views\MuenView.baml
+D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Debug\Views\ParseLableView.baml
 D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Debug\BookLabel.LabelModule.g.resources
 D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Debug\BookLabel.LabelModule.csproj.CoreCompileInputs.cache
 D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Debug\BookLabel.LabelModule.dll
 D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Debug\BookLabel.LabelModule.pdb
-D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Debug\BookLabel.LabelModule.csproj.AssemblyReference.cache
