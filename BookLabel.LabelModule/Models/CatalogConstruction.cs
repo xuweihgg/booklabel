@@ -98,7 +98,7 @@ BoolLabelName VARCHAR2(100) NOT NULL,
 LabelPath VARCHAR2(100) NOT NULL,
 CatalogId VARCHAR2(100) NOT NULL,
 CreateTime datetime,
-PRIMARY KEY (BookLabelId))");
+PRIMARY KEY (BookLabelId, BoolLabelName))");
         }
 
         public override bool NeedPreserveData(string tableName)

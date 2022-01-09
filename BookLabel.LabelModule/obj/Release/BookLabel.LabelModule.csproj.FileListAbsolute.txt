@@ -35,3 +35,7 @@ D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Release\BookLabe
 D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Release\BookLabel.LabelModule.pdb
 D:\xuwei\WorkSpace\gitspace\booklabel\bin\Release\BookLabel.LabelModule.dll
 D:\xuwei\WorkSpace\gitspace\booklabel\bin\Release\BookLabel.LabelModule.pdb
+D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Release\BookLabel.LabelModule.csproj.AssemblyReference.cache
+D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Release\Views\ParseLableView.g.cs
+D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Release\Resource\TreeviewStyle.baml
+D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.LabelModule\obj\Release\Views\ParseLableView.baml

@@ -42,3 +42,5 @@ D:\xuwei\WorkSpace\gitspace\booklabel\bin\Release\目录整理.exe.config
 D:\xuwei\WorkSpace\gitspace\booklabel\bin\Release\目录整理.exe
 D:\xuwei\WorkSpace\gitspace\booklabel\bin\Release\目录整理.pdb
 D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.Shell\obj\Release\目录整理.exe.config
+D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.Shell\obj\Release\目录整理_MarkupCompile.lref
+D:\xuwei\WorkSpace\gitspace\booklabel\BookLabel.Shell\obj\Release\App.baml

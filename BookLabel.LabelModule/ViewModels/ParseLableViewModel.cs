@@ -20,6 +20,8 @@ namespace BookLabel.LabelModule.ViewModels
             Catalogs = new ObservableCollection<CatalogConstruction>();
             AddBookLabelCommand = new DelegateCommand(AddBookLabel);
             ModifyBookLabelCommand = new DelegateCommand(ModifyBookLabel);
+            DeleteLabelCommand = new DelegateCommand(DeleteLabel);
+            DeleteLabelDetailCommand = new DelegateCommand(DeleteLabelDetail);
             BookLables = new ObservableCollection<string>();
             BookLabelDetails = new ObservableCollection<BookLabelDetail>();
             SelectionChangedAction = new Action<object>(cc => SelectedChanage(cc));
@@ -70,8 +72,15 @@ namespace BookLabel.LabelModule.ViewModels
             {
                 FolderPath = dialog.SelectedPath;
             }
-            if (!string.IsNullOrWhiteSpace(FolderPath))
-                ParseFolder();
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(FolderPath))
+                    ParseFolder();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"解析目录错误：{ex.Message}");
+            }
         }
         public ObservableCollection<CatalogConstruction> Catalogs { get; set; }
         private void ParseFolder()
@@ -80,29 +89,61 @@ namespace BookLabel.LabelModule.ViewModels
             foreach (var item in catalogs)
                 Catalogs.Add(item);
         }
-        public string LabelName { get; set; }
+        private string labelName;
+        public string LabelName { get { return labelName; } set { labelName = value;NotifyPropertyChanged("LabelName"); } }
         public DelegateCommand AddBookLabelCommand { get; set; }
         private void AddBookLabel()
         {
-            if (Catalog == null)
-                return;
-            if (string.IsNullOrWhiteSpace(LabelName))
-                return;
-            BookLabelDetails.Clear();
-            var detail = Catalog.BookLabelDetails.Where(x => x.IsChecked).ToList();
-            foreach (var item in detail)
+            try
             {
-                item.BoolLabelName = LabelName;
-                BookLabelDetails.Add(item);
-                DataCoach.GetInstance().InsertLable(item);
+                if (Catalog == null)
+                    return;
+                if (string.IsNullOrWhiteSpace(LabelName))
+                    return;
+
+                if (!BookLables.Any(x => x == LabelName))
+                {
+                    BookLables.Add(LabelName);
+                    BookLabelDetails.Clear();
+                    SelectedLabel = LabelName;
+                }
+
+                var detail = Catalog.BookLabelDetails.Where(x => x.IsChecked).ToList();
+                foreach (var item in detail)
+                {
+                    if (BookLabelDetails.Any(x => x.BookLabelId == item.BookLabelId))
+                        continue;
+
+                    BookLabelDetail temp = new BookLabelDetail();
+                    temp.BookLabelId = item.BookLabelId;
+                    temp.BoolLabelName = labelName;
+                    temp.CatalogId = item.CatalogId;
+                    temp.CreateTime = item.CreateTime;
+                    temp.LabelPath = item.LabelPath;
+                    temp.CreateTime = item.CreateTime;
+
+                    BookLabelDetails.Add(temp);
+                    DataCoach.GetInstance().InsertLable(temp);
+                }
             }
-            if (!BookLables.Any(x => x == LabelName))
-                BookLables.Add(LabelName);
+            catch (Exception ex)
+            {
+                MessageBox.Show($"添加书签错误：{ex.Message}");
+            }
         }
         public DelegateCommand ModifyBookLabelCommand { get; set; }
         private void ModifyBookLabel()
         {
-            
+            if (string.IsNullOrWhiteSpace(SelectedLabel))
+                return;
+            if (string.IsNullOrWhiteSpace(LabelName))
+                return;
+
+            SelectedLabel = LabelName;
+            foreach (var item in BookLabelDetails)
+            {
+                DataCoach.GetInstance().UpdateLable(item);
+            }
         }
         public ObservableCollection<string> BookLables { get; set; }
 
@@ -118,12 +159,52 @@ namespace BookLabel.LabelModule.ViewModels
                 if (selectedLabel == value)
                     return;
                 selectedLabel = value;
+                LabelName = value;
                 BookLabelDetails.Clear();
                 var items = DataCoach.GetInstance().GetBookLabelDetais(value);
                 items.ForEach(x => BookLabelDetails.Add(x));
             }
         }
         public ObservableCollection<BookLabelDetail> BookLabelDetails { get; set; }
+
+        public BookLabelDetail SelectedBookLabelDetail { get; set; }
+
+        public DelegateCommand DeleteLabelCommand { get; set; }
+        private void DeleteLabel()
+        {
+            try
+            {
+                if (SelectedLabel != null)
+                {
+                    var details = DataCoach.GetInstance().GetBookLabelDetais(SelectedLabel);
+                    foreach (var item in details)
+                    {
+                        DataCoach.GetInstance().DeletLable(item);
+                    }
+                    BookLables.Remove(SelectedLabel);
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        public DelegateCommand DeleteLabelDetailCommand { get; set; }
+        private void DeleteLabelDetail()
+        {
+            if (SelectedBookLabelDetail != null)
+            {
+                try
+                {
+                    DataCoach.GetInstance().DeletLable(SelectedBookLabelDetail);
+                    BookLabelDetails.Remove(SelectedBookLabelDetail);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
 
         #region INotifyPropertyChanged Members
 

@@ -1,6 +1,10 @@
 bin
 .vs
 packages
-BookLabel.LabelModule/bin/
+BookLabel.LabelModule/bin/Release
 BookLabel.LabelModule/obj/
 BookLabel.Shell/bin
+bin/Debug
+BookLabel.LabelModule/bin/Debug
+BookLabel.Shell/obj/Debug
+BookLabel.Shell/obj/Release

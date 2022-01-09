@@ -53,6 +53,7 @@ namespace BookLabel.LabelModule.Models
         [PrimaryKey(0), Required]
         public string BookLabelId { get; set; }
 
+        [PrimaryKey(1), Required]
         public string BoolLabelName { get; set; }
 
         public string LabelPath { get; set; }
