@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,8 @@ namespace BookLabel.LabelModule.ViewModels
             ModifyBookLabelCommand = new DelegateCommand(ModifyBookLabel);
             DeleteLabelCommand = new DelegateCommand(DeleteLabel);
             DeleteLabelDetailCommand = new DelegateCommand(DeleteLabelDetail);
-            BookLables = new ObservableCollection<string>();
+            OpenCurrentFileCommand = new DelegateCommand(OpenCurrentFile);
+            BookLables = new ObservableCollection<CatalogLabel>();
             BookLabelDetails = new ObservableCollection<BookLabelDetail>();
             SelectionChangedAction = new Action<object>(cc => SelectedChanage(cc));
             Initialize();
@@ -31,7 +33,18 @@ namespace BookLabel.LabelModule.ViewModels
         private void Initialize()
         {
             var lists = DataCoach.GetInstance().GetBookLabelDetais();
-            BookLables = new ObservableCollection<string>(lists.Select((x) => x.BoolLabelName).Distinct());
+            BookLables = new ObservableCollection<CatalogLabel>(DataCoach.GetInstance().GetCatalogLabel());
+            BookStatus = new ObservableCollection<string>();
+            BookStatus.Add("全部");
+            BookStatus.Add("完结");
+            BookStatus.Add("连载");
+        }
+
+        private string _title;
+        public string Title
+        {
+            get { return _title; }
+            set { _title = value;NotifyPropertyChanged("Title"); }
         }
 
         public Action<object> SelectionChangedAction { get; set; }
@@ -89,6 +102,14 @@ namespace BookLabel.LabelModule.ViewModels
             foreach (var item in catalogs)
                 Catalogs.Add(item);
         }
+        public ObservableCollection<string> BookStatus { get; set; }
+
+        private string selectedBookStatus;
+        public string SelectedBookStatus { get { return selectedBookStatus; } set { selectedBookStatus = value; NotifyPropertyChanged("SelectedBookStatus"); } }
+
+        private string selectedBookType;
+        public string SelectedBookType { get { return selectedBookType; } set { selectedBookType = value; NotifyPropertyChanged("SelectedBookType"); } }
+
         private string labelName;
         public string LabelName { get { return labelName; } set { labelName = value;NotifyPropertyChanged("LabelName"); } }
         public DelegateCommand AddBookLabelCommand { get; set; }
@@ -98,26 +119,46 @@ namespace BookLabel.LabelModule.ViewModels
             {
                 if (Catalog == null)
                     return;
-                if (string.IsNullOrWhiteSpace(LabelName))
+                if (string.IsNullOrWhiteSpace(SelectedBookType) && string.IsNullOrWhiteSpace(LabelName))
+                    return;
+                if (string.IsNullOrWhiteSpace(SelectedBookStatus))
                     return;
 
-                if (!BookLables.Any(x => x == LabelName))
+                if (!string.IsNullOrWhiteSpace(SelectedBookType))
                 {
-                    BookLables.Add(LabelName);
-                    BookLabelDetails.Clear();
-                    SelectedLabel = LabelName;
+                    if (!DataCoach.GetInstance().CatalogLabels.Any(x => x.CatalogLabelType == (int)BookLabelType.AllType && x.CatalogLabelName == SelectedBookType))
+                    {
+                        DataCoach.GetInstance().InsertCatalogLabel(new CatalogLabel(Guid.NewGuid().ToString(), SelectedBookType, (int)BookLabelType.AllType));
+                    }
+                }
+
+                if (!string.IsNullOrWhiteSpace(SelectedBookStatus))
+                {
+                    if (!DataCoach.GetInstance().CatalogLabels.Any(x => x.CatalogLabelType == (int)BookLabelType.AllStatus && x.CatalogLabelName == SelectedBookStatus))
+                    {
+                        DataCoach.GetInstance().InsertCatalogLabel(new CatalogLabel(Guid.NewGuid().ToString(), SelectedBookStatus, (int)BookLabelType.AllStatus));
+                    }
+                }
+
+                if (!string.IsNullOrWhiteSpace(LabelName))
+                {
+                    if (!DataCoach.GetInstance().CatalogLabels.Any(x => x.CatalogLabelType == (int)BookLabelType.AllLabel && x.CatalogLabelName == LabelName))
+                    {
+                        DataCoach.GetInstance().InsertCatalogLabel(new CatalogLabel(Guid.NewGuid().ToString(), LabelName, (int)BookLabelType.AllLabel));
+                    }
                 }
 
                 var detail = Catalog.BookLabelDetails.Where(x => x.IsChecked).ToList();
                 foreach (var item in detail)
                 {
-                    if (BookLabelDetails.Any(x => x.BookLabelId == item.BookLabelId))
+                    if (BookLabelDetails.Any(x => x.LabelPath == item.LabelPath && x.LabelStatus == item.LabelStatus && x.LabelType == item.LabelType && x.BoolLabelName == item.BoolLabelName))
                         continue;
 
                     BookLabelDetail temp = new BookLabelDetail();
-                    temp.BookLabelId = item.BookLabelId;
-                    temp.BoolLabelName = labelName;
-                    temp.CatalogId = item.CatalogId;
+                    temp.BookLabelId = Guid.NewGuid().ToString();
+                    temp.BoolLabelName = LabelName;
+                    temp.LabelStatus = SelectedBookStatus;
+                    temp.LabelType = SelectedBookType;
                     temp.CreateTime = item.CreateTime;
                     temp.LabelPath = item.LabelPath;
                     temp.CreateTime = item.CreateTime;
@@ -134,21 +175,22 @@ namespace BookLabel.LabelModule.ViewModels
         public DelegateCommand ModifyBookLabelCommand { get; set; }
         private void ModifyBookLabel()
         {
-            if (string.IsNullOrWhiteSpace(SelectedLabel))
+            if (SelectedLabel == null)
                 return;
             if (string.IsNullOrWhiteSpace(LabelName))
                 return;
 
-            SelectedLabel = LabelName;
+            SelectedLabel.CatalogLabelName = LabelName;
+            DataCoach.GetInstance().UpdateCatalogLabel(SelectedLabel);
             foreach (var item in BookLabelDetails)
             {
                 DataCoach.GetInstance().UpdateLable(item);
             }
         }
-        public ObservableCollection<string> BookLables { get; set; }
+        public ObservableCollection<CatalogLabel> BookLables { get; set; }
 
-        private string selectedLabel;
-        public string SelectedLabel 
+        private CatalogLabel selectedLabel;
+        public CatalogLabel SelectedLabel 
         {
             get 
             {
@@ -158,10 +200,12 @@ namespace BookLabel.LabelModule.ViewModels
             {
                 if (selectedLabel == value)
                     return;
+                if (value == null)
+                    return;
                 selectedLabel = value;
-                LabelName = value;
+                LabelName = value.CatalogLabelName;
                 BookLabelDetails.Clear();
-                var items = DataCoach.GetInstance().GetBookLabelDetais(value);
+                var items = DataCoach.GetInstance().GetBookLabelDetais(value.CatalogLabelName);
                 items.ForEach(x => BookLabelDetails.Add(x));
             }
         }
@@ -176,11 +220,7 @@ namespace BookLabel.LabelModule.ViewModels
             {
                 if (SelectedLabel != null)
                 {
-                    var details = DataCoach.GetInstance().GetBookLabelDetais(SelectedLabel);
-                    foreach (var item in details)
-                    {
-                        DataCoach.GetInstance().DeletLable(item);
-                    }
+                    DataCoach.GetInstance().DeleteCatalogLabel(SelectedLabel);
                     BookLables.Remove(SelectedLabel);
                 }
             }
@@ -202,6 +242,56 @@ namespace BookLabel.LabelModule.ViewModels
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        public DelegateCommand OpenCurrentFileCommand { get; set; }
+
+        private void OpenCurrentFile()
+        {
+            if (SelectedBookLabelDetail != null)
+            {
+                Process process = new Process();
+                ProcessStartInfo processStartInfo = new ProcessStartInfo(SelectedBookLabelDetail.LabelPath);
+                process.StartInfo = processStartInfo;
+                #region 下面这段被注释掉代码（可以用来全屏打开代码）
+                ////建立新的系统进程    
+                //System.Diagnostics.Process process = new System.Diagnostics.Process();
+                ////设置文件名，此处为图片的真实路径+文件名（需要有后缀）    
+                //process.StartInfo.FileName = NewFileName;
+                ////此为关键部分。设置进程运行参数，此时为最大化窗口显示图片。    
+                //process.StartInfo.Arguments = "rundll32.exe C://WINDOWS//system32//shimgvw.dll,ImageView_Fullscreen";
+                //// 此项为是否使用Shell执行程序，因系统默认为true，此项也可不设，但若设置必须为true    
+                //process.StartInfo.UseShellExecute = true;
+                #endregion
+                try
+                {
+                    process.Start();
+                    try
+                    {
+                        // process.WaitForExit();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    try
+                    {
+                        if (process != null)
+                        {
+                            process.Close();
+                            process = null;
+                        }
+                    }
+                    catch { }
                 }
             }
         }

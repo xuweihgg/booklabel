@@ -28,9 +28,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2">
+        <StackPanel Orientation="Horizontal" Grid.Column="1" >
             <TextBox Text="{Binding FolderPath}" Width="300" Height="24"></TextBox>
             <Button Content="选择目录" Margin="5,0,0,0" Command="{Binding OpenFolderCommand}"/>
             <!--<Button Content="解析目录" Margin="5,0,0,0" Command="{Binding ParseFolderCommand}"/>-->
@@ -70,35 +70,27 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <ListBox  Grid.Row="2" Grid.Column="0"  ItemsSource="{Binding BookLables}" SelectedItem="{Binding SelectedLabel}" Background="Transparent">
-            <ListBox.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="删除" Command="{Binding DeleteLabelCommand}"/>
-                </ContextMenu>
-            </ListBox.ContextMenu>
-        </ListBox>
+
+         <!--<Grid  Grid.Row="2" Grid.Column="0">
+           <ListBox  Grid.Row="2" Grid.Column="0" Foreground="White"  ItemsSource="{Binding BookLables}" SelectedItem="{Binding SelectedLabel}" DisplayMemberPath="CatalogLabelName" Background="Transparent">
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="删除" Command="{Binding DeleteLabelCommand}"/>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+            </ListBox>
+        </Grid>-->
 
         <Grid  Grid.Row="2" Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
-                <TextBox Text="{Binding LabelName}" Width="200" Height="25"/>
+                <TextBlock Text="分类"/>
+                <TextBox Margin="5,0,0,0" Text="{Binding SelectedBookType}" Width="200" Height="25"/>
+                <TextBlock Margin="5,0,0,0" Text="状态"/>
+                <ComboBox Margin="5,0,0,0" ItemsSource="{Binding BookStatus}" SelectedItem="{Binding SelectedBookStatus}"  SelectedIndex="0"  Width="200" Height="25"/>
+                <TextBlock Margin="5,0,0,0" Text="标签"/>
+                <TextBox Margin="5,0,0,0" Text="{Binding LabelName}" Width="200" Height="25"/>
                 <Button Content="添加" Margin="5,0,0,0" Width="40" Height="25" Command="{Binding AddBookLabelCommand}"/>
-                <!--<Button Content="修改" Margin="5,0,0,0" Width="40" Height="25" Command="{Binding ModifyBookLabelCommand}"/>-->
             </StackPanel>
-            <DataGrid Grid.Row="1" ItemsSource="{Binding BookLabelDetails}" SelectedItem="{Binding SelectedBookLabelDetail}" Background="Transparent"  SelectionUnit="FullRow"  AutoGenerateColumns="False">
-                <DataGrid.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="删除" Command="{Binding DeleteLabelDetailCommand}"></MenuItem>
-                    </ContextMenu>
-                </DataGrid.ContextMenu>
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="名称" Binding="{Binding Path=BoolLabelName }"/>
-                    <DataGridTextColumn Header="目录" Binding="{Binding Path=LabelPath}"/>
-                </DataGrid.Columns>
-            </DataGrid>
         </Grid>
     </Grid>
 </UserControl>

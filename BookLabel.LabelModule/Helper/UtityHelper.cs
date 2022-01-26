@@ -21,7 +21,6 @@ namespace BookLabel.LabelModule
                     BookLabelId = Guid.NewGuid().ToString(),
                     BoolLabelName = f.Name,
                     LabelPath = f.FullName,
-                    CatalogId = catalog,
                 }) ;
             }
             return list;

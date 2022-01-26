@@ -15,10 +15,13 @@ namespace BookLabel.LabelModule.Models
         private bool isChecked;
         public bool IsChecked { get { return isChecked; } set { isChecked = value;NotifyPropertyChanged("IsChecked"); } }
         public string BookLabelId { get; set; }
+        public string LabelType { get; set; }
+        public string LabelStatus { get; set; }
         public string BoolLabelName { get; set; }
         public DateTime CreateTime { get; set; }
+
+        public string DisplayName { get { return $"{LabelType},{LabelStatus},{BoolLabelName}"; } }
         public string LabelPath { get; set; }
-        public string CatalogId { get; set; }
 
         #region INotifyPropertyChanged Members
 
@@ -52,13 +55,12 @@ namespace BookLabel.LabelModule.Models
 
         [PrimaryKey(0), Required]
         public string BookLabelId { get; set; }
+        public string LabelType { get; set; }
+        public string LabelStatus { get; set; }
 
-        [PrimaryKey(1), Required]
         public string BoolLabelName { get; set; }
 
         public string LabelPath { get; set; }
-
-        public string CatalogId { get; set; }
 
         public DateTime CreateTime { get; set; }
     }

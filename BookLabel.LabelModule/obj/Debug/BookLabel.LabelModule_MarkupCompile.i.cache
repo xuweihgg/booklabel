@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 
-51512869969
+6478008955
 
-311264265803
+36-943769546
 27-2032572313
-Controls\EditableTextBox.xaml;Resource\TreeviewStyle.xaml;Views\AddCatalogView.xaml;Views\MuenView.xaml;Views\ParseLableView.xaml;
+Controls\EditableTextBox.xaml;Resource\TreeviewStyle.xaml;Views\AddCatalogView.xaml;Views\BookLabelView.xaml;Views\MuenView.xaml;Views\ParseLableView.xaml;
 
-False
+True
 

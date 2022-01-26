@@ -66,6 +66,7 @@
       <DependentUpon>EditableTextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SelectTreeView.cs" />
+    <Compile Include="DataCoach\ConstDefines.cs" />
     <Compile Include="DataCoach\DataCoach.cs" />
     <Compile Include="Events\Attachment.cs" />
     <Compile Include="Events\EventBase.cs" />
@@ -78,6 +79,9 @@
     <Compile Include="Helper\ViewHelper.cs" />
     <Compile Include="Interactivity\MouseDoubleClickTrigger.cs" />
     <Compile Include="Interactivity\TreeViewMouseRightButtonSelectionBehavior.cs" />
+    <Compile Include="Models\CatalogLabel.cs" />
+    <Compile Include="Services\CatalogLabelService.cs" />
+    <Compile Include="ViewModels\BookLabelViewModel.cs" />
     <Compile Include="ViewModels\ParseLableViewModel.cs" />
     <Compile Include="Views\AddCatalogView.xaml.cs">
       <DependentUpon>AddCatalogView.xaml</DependentUpon>
@@ -94,6 +98,9 @@
     <Compile Include="Services\LabelDetailDataServices.cs" />
     <Compile Include="Services\SqlliteDataService.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
+    <Compile Include="Views\BookLabelView.xaml.cs">
+      <DependentUpon>BookLabelView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MuenView.xaml.cs">
       <DependentUpon>MuenView.xaml</DependentUpon>
     </Compile>
@@ -112,6 +119,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AddCatalogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BookLabelView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

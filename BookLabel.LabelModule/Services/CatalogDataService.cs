@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BookLabel.LabelModule.Services
 {
-    public class CatalogDataService : ICatalogDataService
+    public class CatalogDataService 
     {
         LabelDetailDataServices dataServices;
         public CatalogDataService()
@@ -82,11 +82,6 @@ namespace BookLabel.LabelModule.Services
             using (GlobalInfo.SystemDB.GetConnection())
             {
                 res = CatalogConstructionTable.Records.Delete(x => x.CatalogId == detail.CatalogId);
-            }
-
-            using (GlobalInfo.SystemDB.GetConnection())
-            {
-                res = BookLabelDetailTable.Records.Delete(x => x.CatalogId == detail.CatalogId);
             }
             return res > 0;
         }

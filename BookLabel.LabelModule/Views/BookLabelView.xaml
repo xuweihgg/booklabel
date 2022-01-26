@@ -1,0 +1,106 @@
+﻿<UserControl x:Class="BookLabel.LabelModule.Views.BookLabelView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BookLabel.LabelModule.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid   Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+            <ItemsControl ItemsSource="{Binding FilterTypes}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="3">
+                            <WrapPanel>
+                                <Button Content="{Binding CatalogLabelName}" Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl},Path=DataContext.SelectFilterTypeCommand}" CommandParameter="{Binding}"/>
+                            </WrapPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding BookTypes}" >
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="3">
+                            <WrapPanel>
+                                <Button Content="{Binding CatalogLabelName}" Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl},Path=DataContext.SelectBookTypeCommand}" CommandParameter="{Binding}"/>
+                            </WrapPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            
+            <ItemsControl Grid.Row="2" ItemsSource="{Binding StatusTypes}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="3">
+                            <WrapPanel>
+                                <Button Content="{Binding CatalogLabelName}" Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl},Path=DataContext.SelectStatusTypeCommand}" CommandParameter="{Binding}"/>
+                            </WrapPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            
+            <ItemsControl Grid.Row="3" ItemsSource="{Binding LabelTypes}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="3">
+                            <WrapPanel>
+                                <Button Content="{Binding CatalogLabelName}" Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl},Path=DataContext.SelectLabelTypeCommand}" CommandParameter="{Binding}"/>
+                            </WrapPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <DataGrid Grid.Row="1" ItemsSource="{Binding BookLabelDetails}" SelectedItem="{Binding SelectedBookLabelDetail}" Background="Transparent"  SelectionUnit="FullRow"  AutoGenerateColumns="False">
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="删除" Command="{Binding DeleteLabelDetailCommand}"></MenuItem>
+                        <MenuItem Header="打开文件"  Command="{Binding OpenCurrentFileCommand}" />
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="名称" Binding="{Binding Path=DisplayName }"/>
+                    <DataGridTextColumn Header="目录" Binding="{Binding Path=LabelPath}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</UserControl>

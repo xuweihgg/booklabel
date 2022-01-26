@@ -168,12 +168,12 @@ namespace BookLabel.LabelModule.ViewModels
         private void SelectedChanage(object cc)
         {
             BookLabelDetails.Clear();
-            if (cc is CatalogConstruction)
-            {
-                Catalog = cc as CatalogConstruction;
-                var items = DataCoach.GetInstance().GetBookLabelDetais().Where(x => x.CatalogId == Catalog.CatalogId).ToList();
-                items.ForEach(x => BookLabelDetails.Add(x));
-            }
+            //if (cc is CatalogConstruction)
+            //{
+            //    Catalog = cc as CatalogConstruction;
+            //    var items = DataCoach.GetInstance().GetBookLabelDetais().Where(x => x.CatalogId == Catalog.CatalogId).ToList();
+            //    items.ForEach(x => BookLabelDetails.Add(x));
+            //}
         }
 
         private void TreeViewDoubleClick(object cc)
@@ -243,7 +243,7 @@ namespace BookLabel.LabelModule.ViewModels
                 return;
             if (string.IsNullOrWhiteSpace(LabelPath))
                 return;
-            var detail = new BookLabelDetail { BookLabelId = Guid.NewGuid().ToString(), BoolLabelName = LableName, CatalogId = Catalog.CatalogId, CreateTime = DateTime.Now, LabelPath = LabelPath };
+            var detail = new BookLabelDetail { BookLabelId = Guid.NewGuid().ToString(), BoolLabelName = LableName, CreateTime = DateTime.Now, LabelPath = LabelPath };
             BookLabelDetails.Add(detail);
             DataCoach.GetInstance().InsertLable(detail);
             if (!BookLables.Any(x => x == LableName))
@@ -317,7 +317,7 @@ namespace BookLabel.LabelModule.ViewModels
                 foreach (var item in strs)
                 {
                     string filename = Path.GetFileName(item);
-                    var detail = new BookLabelDetail { BookLabelId = Guid.NewGuid().ToString(), BoolLabelName = LableName, CatalogId = Catalog.CatalogId, CreateTime = DateTime.Now, LabelPath = item };
+                    var detail = new BookLabelDetail { BookLabelId = Guid.NewGuid().ToString(), BoolLabelName = LableName, CreateTime = DateTime.Now, LabelPath = item };
                     BookLabelDetails.Add(detail);
                     DataCoach.GetInstance().InsertLable(detail);
                 }

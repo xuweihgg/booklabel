@@ -83,22 +83,21 @@ namespace BookLabel.LabelModule.Models
     {
         static CatalogConstructionUpdater()
         {
-            Actions[typeof(CatalogConstructionUpdater)] = new List<UpdateAction>();
-            Versions[typeof(CatalogConstructionUpdater)] = 0;
-            AddUpdateAction(typeof(CatalogConstructionUpdater), @"CREATE TABLE CatalogConstructionTable(
-CatalogId VARCHAR2(100) NOT NULL,
-CatalogName VARCHAR2(100) NOT NULL,
-CatalogParentId VARCHAR2(100) NOT NULL,
-CatalogCreateDate datetime,
-PRIMARY KEY (CatalogId))");
-
             AddUpdateAction(typeof(CatalogConstructionUpdater), @"CREATE TABLE BookLabelDetailTable(
 BookLabelId VARCHAR2(100) NOT NULL,
+LabelType VARCHAR2(100) NOT NULL,
+LabelStatus VARCHAR2(100) NOT NULL,
 BoolLabelName VARCHAR2(100) NOT NULL,
 LabelPath VARCHAR2(100) NOT NULL,
-CatalogId VARCHAR2(100) NOT NULL,
 CreateTime datetime,
-PRIMARY KEY (BookLabelId, BoolLabelName))");
+PRIMARY KEY (BookLabelId))");
+
+            AddUpdateAction(typeof(CatalogConstructionUpdater), @"CREATE TABLE CatalogLabelTable(
+CatalogLabelId VARCHAR2(100) NOT NULL,
+CatalogLabelName VARCHAR2(100) NOT NULL,
+CatalogLabelType INT32 NOT NULL,
+PRIMARY KEY (CatalogLabelId))");
+
         }
 
         public override bool NeedPreserveData(string tableName)

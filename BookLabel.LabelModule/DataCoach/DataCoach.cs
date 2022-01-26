@@ -12,12 +12,14 @@ namespace BookLabel.LabelModule
     {
         private static  DataCoach dataCoach;
 
-        ILabelDetailDataServices dataServices;
-        ICatalogDataService catalogDataService;
+        LabelDetailDataServices dataServices;
+        CatalogDataService catalogDataService;
+        CatalogLabelService catalogLabelService;
         private DataCoach()
         {
             dataServices = new LabelDetailDataServices();
             catalogDataService = new CatalogDataService();
+            catalogLabelService = new CatalogLabelService();
         }
 
         private static object dataCoach_lock = new object();
@@ -62,6 +64,25 @@ namespace BookLabel.LabelModule
             if (bookLabelDetails != null)
             {
                 return bookLabelDetails.Where(x => x.BoolLabelName == bookLabelName).ToList();
+            }
+            return null;
+        }
+
+        private List<CatalogLabel> catalogLabels = null;
+        public List<CatalogLabel> GetCatalogLabels()
+        {
+            if (catalogLabels == null)
+            {
+                catalogLabels = new List<CatalogLabel>();
+                catalogLabels = catalogLabelService.GetCatalogLabels();
+            }
+            return catalogLabels;
+        }
+        public List<CatalogLabel> GetCatalogLabelsByType(int lableType)
+        {
+            if (catalogLabels != null)
+            {
+                return catalogLabels.Where(x => x.CatalogLabelType == lableType).ToList();
             }
             return null;
         }
@@ -126,13 +147,14 @@ namespace BookLabel.LabelModule
                 return false;
             if (bookLabelDetails != null)
             {
-                if (bookLabelDetails.Any(x => x.CatalogId == bookLabel.CatalogId))
+                if (bookLabelDetails.Any(x => x.BookLabelId == bookLabel.BookLabelId))
                 {
                     var item = bookLabelDetails.FirstOrDefault(x => x.BookLabelId == bookLabel.BookLabelId);
+                    item.LabelStatus = bookLabel.LabelStatus;
+                    item.LabelType = bookLabel.LabelType;
                     item.BoolLabelName = bookLabel.BoolLabelName;
                     item.CreateTime = bookLabel.CreateTime;
                     item.LabelPath = bookLabel.LabelPath;
-                    item.CatalogId = bookLabel.CatalogId;
                 }
                 dataServices.Update(bookLabel);
             }
@@ -150,5 +172,51 @@ namespace BookLabel.LabelModule
             }
             return true;
         }
+
+        public List<CatalogLabel> CatalogLabels;
+        public List<CatalogLabel> GetCatalogLabel()
+        {
+            if (CatalogLabels == null)
+            {
+                CatalogLabels = new List<CatalogLabel>();
+                CatalogLabels = catalogLabelService.GetCatalogLabels();
+            }
+            return CatalogLabels;
+        }
+        public bool InsertCatalogLabel(CatalogLabel label)
+        {
+            if(label == null)
+            {
+                return false;
+            }
+            return catalogLabelService.InsertCatalogLable(label);
+        }
+
+        public bool UpdateCatalogLabel(CatalogLabel label) 
+        {
+            if (label == null)
+                return false;
+            return catalogLabelService.Update(label);
+        }
+
+        public bool DeleteCatalogLabel(CatalogLabel label)
+        {
+            if (label == null)
+                return false;
+
+            if (bookLabelDetails != null)
+            {
+                var items = bookLabelDetails.Where(x => x.BoolLabelName == label.CatalogLabelName).ToList();
+                foreach (var item in items)
+                {
+                    bookLabelDetails.Remove(item);
+                }
+            }
+            catalogLabelService.Delete(label);
+
+            return true;
+        }
+
+
     }
 }

@@ -61,7 +61,10 @@
                 </Setter.Value>
             </Setter>
         </Style>
-    </Window.Resources>
+        <Style TargetType="TabItem">
+                <Setter Property="Header" Value="{Binding DataContext.Title}" />
+            </Style>
+        </Window.Resources>
     <Grid>
         <Grid.Background>
             <RadialGradientBrush>
@@ -70,69 +73,17 @@
                               Offset="1" />
             </RadialGradientBrush>
         </Grid.Background>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
 
-        <!-- App Banner -->
-        <Canvas x:Name="Banner"
-                Grid.Row="0"
-                Grid.Column="0"
-                Grid.ColumnSpan="3"
-                RenderTransformOrigin="0.5,0.5">
-            <Canvas.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform />
-                    <SkewTransform />
-                    <RotateTransform />
-                    <TranslateTransform />
-                </TransformGroup>
-            </Canvas.RenderTransform>
-            <TextBlock Canvas.Top="10"
-                       Canvas.Left="15"
-                       Text="Prism "
-                       TextWrapping="NoWrap"
-                       Foreground="#FFBBD3EF"
-                       FontSize="30"
-                       Opacity="0.7"
-                       TextAlignment="Left"
-                       FontWeight="Bold" />
-            <TextBlock Canvas.Top="10"
-                       Canvas.Left="210"
-                       Text="UI Composition QuickStart"
-                       TextWrapping="NoWrap"
-                       Foreground="#FFC8D5DE"
-                       FontSize="25"
-                       Opacity="0.85"
-                       TextAlignment="Left"
-                       FontWeight="Normal"
-                       RenderTransformOrigin="0.5,0.5">
-                <TextBlock.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform ScaleX="1.25"
-                                        ScaleY="1.25" />
-                        <SkewTransform />
-                        <RotateTransform />
-                        <TranslateTransform />
-                    </TransformGroup>
-                </TextBlock.RenderTransform>
-            </TextBlock>
-        </Canvas>
 
         <!-- Main Region -->
         <Border Margin="2,2,8,8"
-                Grid.Column="2"
-                Grid.Row="1"
                 BorderThickness="2,2,2,2"
                 CornerRadius="4,4,4,4"
-                BorderBrush="#FF4355C1"
-                Grid.RowSpan="2">
-            <ContentControl x:Name="MainRegion"
+                BorderBrush="#FF4355C1">
+            <TabControl Background="Transparent"  x:Name="MainRegion"
                             prism:RegionManager.RegionName="MainRegion"
-                           
                             VerticalContentAlignment="Stretch"
-                            HorizontalContentAlignment="Stretch" />
+                            HorizontalContentAlignment="Stretch"   />
             <!--Style="{StaticResource ContentControlRegionStyle}"-->
         </Border>
     </Grid>

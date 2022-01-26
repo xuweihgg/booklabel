@@ -8,7 +8,7 @@ using BLToolkit.Data.Linq;
 
 namespace BookLabel.LabelModule.Services
 {
-    public class LabelDetailDataServices : ILabelDetailDataServices
+    public class LabelDetailDataServices 
     {
         public List<BookLabelDetail> GetLabelDetails()
         {
@@ -21,9 +21,10 @@ namespace BookLabel.LabelModule.Services
                     {
                         BookLabelId = item.BookLabelId,
                         BoolLabelName = item.BoolLabelName,
+                        LabelStatus=item.LabelStatus,
+                        LabelType=item.LabelType,
                         CreateTime = item.CreateTime,
                         LabelPath = item.LabelPath,
-                        CatalogId = item.CatalogId,
                     });
                 }
             }
@@ -31,23 +32,22 @@ namespace BookLabel.LabelModule.Services
             return items;
         }
 
-        public List<BookLabelDetail> GetLabelDetailsById(string catalogId)
+        public List<BookLabelDetail> GetLabelDetailsById(string bookLabelName)
         {
             var items = new List<BookLabelDetail>();
 
             using (GlobalInfo.SystemDB.GetConnection())
             {
-                foreach (var item in BookLabelDetailTable.Records.Where(x=>x.CatalogId== catalogId))
+                foreach (var item in BookLabelDetailTable.Records.Where(x=>x.BoolLabelName== bookLabelName).ToList())
                 {
-                    if (item.CatalogId != catalogId)
-                        continue;
                     items.Add(new BookLabelDetail()
                     {
                         BookLabelId = item.BookLabelId,
+                        LabelStatus = item.LabelStatus,
+                        LabelType = item.LabelType,
                         BoolLabelName = item.BoolLabelName,
                         CreateTime = item.CreateTime,
                         LabelPath = item.LabelPath,
-                        CatalogId = item.CatalogId,
                     });
                 }
             }
@@ -63,10 +63,11 @@ namespace BookLabel.LabelModule.Services
                 res = new BookLabelDetailTable()
                 {
                     BookLabelId = detail.BookLabelId,
+                    LabelType=detail.LabelType,
+                    LabelStatus=detail.LabelStatus,
                     BoolLabelName = detail.BoolLabelName,
                     CreateTime = detail.CreateTime,
                     LabelPath = detail.LabelPath,
-                    CatalogId = detail.CatalogId,
                 }.Insert();
             }
             return res > 0;
@@ -79,10 +80,11 @@ namespace BookLabel.LabelModule.Services
             {
                 res = BookLabelDetailTable.Records.Update((x => x.BookLabelId == detail.BookLabelId), p => new BookLabelDetailTable
                 {
+                    LabelType = detail.LabelType,
+                    LabelStatus = detail.LabelStatus,
                     BoolLabelName = detail.BoolLabelName,
                     CreateTime = detail.CreateTime,
                     LabelPath = detail.LabelPath,
-                    CatalogId = detail.CatalogId,
                 });
             }
             return res >= 0;
