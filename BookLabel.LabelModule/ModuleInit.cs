@@ -41,6 +41,7 @@ namespace BookLabel.LabelModule
             InitializeDB();
             var regionManager = containerProvider.Resolve<IRegionManager>();
             IRegion region = regionManager.Regions[RegionNames.MainRegion];
+          
             var tabA = containerProvider.Resolve<ParseLableView>();
             (tabA.DataContext as ParseLableViewModel).Title = "标签设置";
             region.Add(tabA);
