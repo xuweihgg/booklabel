@@ -63,12 +63,12 @@ namespace BookLabel.LabelModule.ViewModels
                     }
                     catch (Exception ex)
                     {
-                        throw ex;
+                        
                     }
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+                    
                 }
                 finally
                 {
